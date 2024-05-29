@@ -1,0 +1,895 @@
+{
+  "project_name": "Recogito Config",
+  "author": "LWJ",
+  "version": "1.21",
+  "created_at": "1685115972558",
+  "policies": [
+    {
+      "id": "a4b82076-cf7d-4f7a-b24d-f12587d71590",
+      "table_name": "context_documents",
+      "operation": "SELECT"
+    },
+    {
+      "id": "02e217c8-9409-4223-a118-ae0487ce4fa5",
+      "table_name": "context_documents",
+      "operation": "INSERT"
+    },
+    {
+      "id": "28a43878-359f-4761-9a45-573fc7b593b1",
+      "table_name": "context_documents",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "80c7a2a2-79e7-4163-b53f-5583506021c1",
+      "table_name": "context_documents",
+      "operation": "DELETE"
+    },
+    {
+      "id": "51eb3610-a7ee-4fd6-9a71-65214aee0dd7",
+      "table_name": "context_users",
+      "operation": "SELECT"
+    },
+    {
+      "id": "3aa4d2bf-2127-4c66-8858-e9a6b59dbd07",
+      "table_name": "context_users",
+      "operation": "INSERT"
+    },
+    {
+      "id": "0377daa4-38b3-459d-8715-999532af1cb1",
+      "table_name": "context_users",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "6a4fec4c-a1c3-4d20-8451-c6ecba886a82",
+      "table_name": "context_users",
+      "operation": "DELETE"
+    },
+    {
+      "id": "79cd967d-f268-4bb8-9e84-0eafeac3307f",
+      "table_name": "installed_plugins",
+      "operation": "SELECT"
+    },
+    {
+      "id": "d651e790-2dc2-4522-b876-9f27af71c5f6",
+      "table_name": "installed_plugins",
+      "operation": "INSERT"
+    },
+    {
+      "id": "0b7820da-aceb-442e-9a5d-3fb3fcaa5254",
+      "table_name": "installed_plugins",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "b92a5f03-ac77-4f0e-907a-873c9d2f78bf",
+      "table_name": "installed_plugins",
+      "operation": "DELETE"
+    },
+    {
+      "id": "50c00273-d524-4d60-a9af-050d1cff51a3",
+      "table_name": "collections",
+      "operation": "SELECT"
+    },
+    {
+      "id": "2b94630b-b725-4715-ba72-3388d3c63cbd",
+      "table_name": "collections",
+      "operation": "INSERT"
+    },
+    {
+      "id": "0fdb8964-87a1-457b-bbcc-b6f05e44c695",
+      "table_name": "collections",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "3152390c-1764-4f4d-b6cd-98979c868286",
+      "table_name": "collections",
+      "operation": "DELETE"
+    },
+    {
+      "id": "b716be7a-81b6-4d0a-a55c-a7ca60352ef3",
+      "table_name": "project_documents",
+      "operation": "SELECT"
+    },
+    {
+      "id": "037bd847-68e1-4e7a-bdce-aa50933dbc00",
+      "table_name": "project_documents",
+      "operation": "INSERT"
+    },
+    {
+      "id": "10c417f5-603d-4bac-90f4-7365289adbc1",
+      "table_name": "project_documents",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "38411911-e90d-4b47-9d2b-39948be3e363",
+      "table_name": "project_documents",
+      "operation": "DELETE"
+    },
+    {
+      "id": "6717fdc0-45df-46f3-b7d3-0d4c4569a33a",
+      "table_name": "annotations",
+      "operation": "SELECT"
+    },
+    {
+      "id": "557553f6-1ce4-44f1-a565-49e38a45b631",
+      "table_name": "annotations",
+      "operation": "INSERT"
+    },
+    {
+      "id": "008dd3b9-a447-4f84-83e0-8143f0ba7454",
+      "table_name": "annotations",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "01c5435d-68ba-442a-a918-d9e0ff53b627",
+      "table_name": "annotations",
+      "operation": "DELETE"
+    },
+    {
+      "id": "17733e9d-9135-424d-9b44-621bd66064a3",
+      "table_name": "bodies",
+      "operation": "SELECT"
+    },
+    {
+      "id": "3650c340-2263-4df5-ae47-ae12ce32a2a8",
+      "table_name": "bodies",
+      "operation": "INSERT"
+    },
+    {
+      "id": "e3276780-1806-400b-b0d4-60e0d617716f",
+      "table_name": "bodies",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "5d48fc5a-a7d0-4dce-837a-083bf793f716",
+      "table_name": "bodies",
+      "operation": "DELETE"
+    },
+    {
+      "id": "8ffcf0ea-9b03-419a-ada9-a56e7033d317",
+      "table_name": "contexts",
+      "operation": "SELECT"
+    },
+    {
+      "id": "f988018e-f8b3-4f17-8fb5-295beaa7e2d8",
+      "table_name": "contexts",
+      "operation": "INSERT"
+    },
+    {
+      "id": "db188f97-0a65-4adf-8961-c475dcc3bdd7",
+      "table_name": "contexts",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "4b9a761e-1070-4f03-aa0f-b6d4231b8dff",
+      "table_name": "contexts",
+      "operation": "DELETE"
+    },
+    {
+      "id": "864e3666-5aaf-4021-b6bb-785ed0714505",
+      "table_name": "default_groups",
+      "operation": "SELECT"
+    },
+    {
+      "id": "256baf94-ca71-4598-bd29-1181cbe2ef76",
+      "table_name": "default_groups",
+      "operation": "INSERT"
+    },
+    {
+      "id": "26a44be2-4db5-4784-ac40-ddfe69f8229d",
+      "table_name": "default_groups",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "6a48f187-2f09-468b-93e0-81627dbeacd6",
+      "table_name": "default_groups",
+      "operation": "DELETE"
+    },
+    {
+      "id": "40c78f89-e227-4bfb-8b7d-5912dd054598",
+      "table_name": "documents",
+      "operation": "SELECT"
+    },
+    {
+      "id": "3eca4407-a589-4301-b705-1deb54a05811",
+      "table_name": "documents",
+      "operation": "INSERT"
+    },
+    {
+      "id": "a2cacc27-cd35-4851-a46a-df0d72cd3751",
+      "table_name": "documents",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "41d6338a-d95e-4e4a-81ce-8ccde043c64e",
+      "table_name": "documents",
+      "operation": "DELETE"
+    },
+    {
+      "id": "b7d1724e-931c-4248-a793-d6cc1ce198f4",
+      "table_name": "group_users",
+      "operation": "SELECT"
+    },
+    {
+      "id": "4c31d65f-07b5-4054-9015-41491973a844",
+      "table_name": "group_users",
+      "operation": "INSERT"
+    },
+    {
+      "id": "9711f038-b4ec-41a6-94e6-25a3b4fcef74",
+      "table_name": "group_users",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "36bc2eca-0861-4a0e-85a1-042262d653dc",
+      "table_name": "group_users",
+      "operation": "DELETE"
+    },
+    {
+      "id": "dbeae20d-f490-45f6-9de8-315e5f88b9a6",
+      "table_name": "invites",
+      "operation": "SELECT"
+    },
+    {
+      "id": "dd203f6b-bc08-4a8e-b0fc-4a772b2f1d7a",
+      "table_name": "invites",
+      "operation": "INSERT"
+    },
+    {
+      "id": "ec8ddded-418c-4078-9d67-31fc0ef17fce",
+      "table_name": "invites",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "0e486412-023d-42ff-b44f-04020c5a404d",
+      "table_name": "invites",
+      "operation": "DELETE"
+    },
+    {
+      "id": "0050ab09-124e-40ea-b7ca-723fcc60c3ed",
+      "table_name": "layer_contexts",
+      "operation": "SELECT"
+    },
+    {
+      "id": "194f2948-2932-4ef4-8047-b5be6311caeb",
+      "table_name": "layer_contexts",
+      "operation": "INSERT"
+    },
+    {
+      "id": "a7ed0949-baba-442d-a670-ac6d9a254e4a",
+      "table_name": "layer_contexts",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "b72b28e1-d364-4707-a414-430f3b126a2b",
+      "table_name": "layer_contexts",
+      "operation": "DELETE"
+    },
+    {
+      "id": "b3bb875a-4e63-41ca-94ec-71fd0f2bad33",
+      "table_name": "layer_groups",
+      "operation": "SELECT"
+    },
+    {
+      "id": "6af8ceea-969c-4b1c-9a6c-49a27d2822a0",
+      "table_name": "layer_groups",
+      "operation": "INSERT"
+    },
+    {
+      "id": "9c4c4720-8396-4d67-994c-f4f80cf65192",
+      "table_name": "layer_groups",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "1ccbb131-cd05-4157-a7ec-249e2211e7cd",
+      "table_name": "layer_groups",
+      "operation": "DELETE"
+    },
+    {
+      "id": "a5f90d2c-51cd-468a-b304-7e5952025a4f",
+      "table_name": "layers",
+      "operation": "SELECT"
+    },
+    {
+      "id": "94b8b59d-178d-4b50-9a25-6ee2dd900eae",
+      "table_name": "layers",
+      "operation": "INSERT"
+    },
+    {
+      "id": "44502907-eb57-4313-89d7-8430d50bf5ea",
+      "table_name": "layers",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "ea68da56-4094-4108-afa1-b7dea3165a50",
+      "table_name": "layers",
+      "operation": "DELETE"
+    },
+    {
+      "id": "1c7bf0a4-3284-4572-9884-e175701e5ad7",
+      "table_name": "organization_groups",
+      "operation": "SELECT"
+    },
+    {
+      "id": "8ff0b01e-3684-4b45-bf0b-a89524a50266",
+      "table_name": "organization_groups",
+      "operation": "INSERT"
+    },
+    {
+      "id": "a5426a8a-f621-4d2f-961a-3870a645c21e",
+      "table_name": "organization_groups",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "9cf05f8a-62fc-4d8a-8738-6139d684183e",
+      "table_name": "organization_groups",
+      "operation": "DELETE"
+    },
+    {
+      "id": "75fc9f7d-26b0-438c-8ba8-c2d9b398a383",
+      "table_name": "policies",
+      "operation": "SELECT"
+    },
+    {
+      "id": "8e3e17bd-2790-4efa-8ac7-0b2e37ba6bef",
+      "table_name": "policies",
+      "operation": "INSERT"
+    },
+    {
+      "id": "8ef93e89-d4a9-4d14-8ee5-bbe5f3a9149c",
+      "table_name": "policies",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "060d2992-f0c8-49e7-a114-2f6d46a1cb00",
+      "table_name": "policies",
+      "operation": "DELETE"
+    },
+    {
+      "id": "c3cd9930-1778-4320-90e9-447d5011a2ee",
+      "table_name": "profiles",
+      "operation": "SELECT"
+    },
+    {
+      "id": "e6ce9c37-4411-4b11-84b7-a4499127ac75",
+      "table_name": "profiles",
+      "operation": "INSERT"
+    },
+    {
+      "id": "50eb62af-c2d1-4b2f-a7f0-3a70b9fe3941",
+      "table_name": "profiles",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "89b86bf4-433b-44a1-954e-6bf8a5589bcf",
+      "table_name": "profiles",
+      "operation": "DELETE"
+    },
+    {
+      "id": "1291126f-21e9-42a3-b56c-0a7e1227a3d6",
+      "table_name": "project_groups",
+      "operation": "SELECT"
+    },
+    {
+      "id": "8ccf6d91-4c95-4cb6-965a-ca574dd2595c",
+      "table_name": "project_groups",
+      "operation": "INSERT"
+    },
+    {
+      "id": "9abee578-76d5-408f-99b6-68ba8d3c9f2d",
+      "table_name": "project_groups",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "290eaefd-2605-47de-a934-4dbd518cb7e1",
+      "table_name": "project_groups",
+      "operation": "DELETE"
+    },
+    {
+      "id": "ca44caef-cdeb-4ca8-bbc7-2421be779934",
+      "table_name": "projects",
+      "operation": "SELECT"
+    },
+    {
+      "id": "b0e10840-0332-41e7-91c8-330842e023a0",
+      "table_name": "projects",
+      "operation": "INSERT"
+    },
+    {
+      "id": "03163857-ff98-4989-bb6a-65304c58107c",
+      "table_name": "projects",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "a1077848-74cf-4c1d-87c7-96794646e7f4",
+      "table_name": "projects",
+      "operation": "DELETE"
+    },
+    {
+      "id": "c6f16244-0737-4d6b-ae40-a02722784d8f",
+      "table_name": "role_policies",
+      "operation": "SELECT"
+    },
+    {
+      "id": "c6ef76b2-f376-43d6-9001-edac1eb05523",
+      "table_name": "role_policies",
+      "operation": "INSERT"
+    },
+    {
+      "id": "12ece44b-fca1-4975-9f1c-42f09212524b",
+      "table_name": "role_policies",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "60bd883f-4065-4df0-9bc7-ee37eb0f9fe3",
+      "table_name": "role_policies",
+      "operation": "DELETE"
+    },
+    {
+      "id": "0f44d9fa-4648-4a33-85c0-cba64229d79e",
+      "table_name": "roles",
+      "operation": "SELECT"
+    },
+    {
+      "id": "17968f3a-89b0-48c0-8b14-c49a044a8f64",
+      "table_name": "roles",
+      "operation": "INSERT"
+    },
+    {
+      "id": "26800335-a066-49b3-8e33-c6cfd804585b",
+      "table_name": "roles",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "e2cd4fa2-df13-4d54-a3c6-fcd788d8702f",
+      "table_name": "roles",
+      "operation": "DELETE"
+    },
+    {
+      "id": "7e830a72-19ac-4486-87a7-ca697f430fca",
+      "table_name": "tag_definitions",
+      "operation": "SELECT"
+    },
+    {
+      "id": "73f9137b-d3b9-49e5-8e3f-f779070ad8f8",
+      "table_name": "tag_definitions",
+      "operation": "INSERT"
+    },
+    {
+      "id": "fe40a2ef-bcae-441a-935a-eda090d0ac6d",
+      "table_name": "tag_definitions",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "8413d484-f01c-4aca-9972-0b9e0b7189fc",
+      "table_name": "tag_definitions",
+      "operation": "DELETE"
+    },
+    {
+      "id": "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
+      "table_name": "tags",
+      "operation": "SELECT"
+    },
+    {
+      "id": "b508e4ca-46bd-478c-9582-fa1c671aa03e",
+      "table_name": "tags",
+      "operation": "INSERT"
+    },
+    {
+      "id": "6ec09042-5dc0-4593-b506-d4c57c3e14cd",
+      "table_name": "tags",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "1994c713-cf46-41da-be95-96dafbb55fe9",
+      "table_name": "tags",
+      "operation": "DELETE"
+    },
+    {
+      "id": "1c1bb427-4f2f-40cb-ae03-6799199bbec8",
+      "table_name": "targets",
+      "operation": "SELECT"
+    },
+    {
+      "id": "5648e0e9-3354-4b5c-b815-29d01d98a551",
+      "table_name": "targets",
+      "operation": "INSERT"
+    },
+    {
+      "id": "45017da5-cb03-4826-ae6f-dafbe1e21339",
+      "table_name": "targets",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "9a7fb2a1-9ccb-4071-8ec9-b90fcf1eb546",
+      "table_name": "targets",
+      "operation": "DELETE"
+    }
+  ],
+  "roles": [
+    {
+      "id": "18b33e9e-c16e-462d-b683-e0562475e661",
+      "name": "Org Admin",
+      "description": "All Policies",
+      "policies": [
+        "6717fdc0-45df-46f3-b7d3-0d4c4569a33a",
+        "557553f6-1ce4-44f1-a565-49e38a45b631",
+        "008dd3b9-a447-4f84-83e0-8143f0ba7454",
+        "01c5435d-68ba-442a-a918-d9e0ff53b627",
+        "17733e9d-9135-424d-9b44-621bd66064a3",
+        "8ffcf0ea-9b03-419a-ada9-a56e7033d317",
+        "40c78f89-e227-4bfb-8b7d-5912dd054598",
+        "b7d1724e-931c-4248-a793-d6cc1ce198f4",
+        "b3bb875a-4e63-41ca-94ec-71fd0f2bad33",
+        "a5f90d2c-51cd-468a-b304-7e5952025a4f",
+        "1c7bf0a4-3284-4572-9884-e175701e5ad7",
+        "75fc9f7d-26b0-438c-8ba8-c2d9b398a383",
+        "c3cd9930-1778-4320-90e9-447d5011a2ee",
+        "1291126f-21e9-42a3-b56c-0a7e1227a3d6",
+        "ca44caef-cdeb-4ca8-bbc7-2421be779934",
+        "c6f16244-0737-4d6b-ae40-a02722784d8f",
+        "0f44d9fa-4648-4a33-85c0-cba64229d79e",
+        "7e830a72-19ac-4486-87a7-ca697f430fca",
+        "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
+        "1c1bb427-4f2f-40cb-ae03-6799199bbec8",
+        "5648e0e9-3354-4b5c-b815-29d01d98a551",
+        "b508e4ca-46bd-478c-9582-fa1c671aa03e",
+        "73f9137b-d3b9-49e5-8e3f-f779070ad8f8",
+        "17968f3a-89b0-48c0-8b14-c49a044a8f64",
+        "c6ef76b2-f376-43d6-9001-edac1eb05523",
+        "b0e10840-0332-41e7-91c8-330842e023a0",
+        "8ccf6d91-4c95-4cb6-965a-ca574dd2595c",
+        "e6ce9c37-4411-4b11-84b7-a4499127ac75",
+        "8e3e17bd-2790-4efa-8ac7-0b2e37ba6bef",
+        "8ff0b01e-3684-4b45-bf0b-a89524a50266",
+        "94b8b59d-178d-4b50-9a25-6ee2dd900eae",
+        "6af8ceea-969c-4b1c-9a6c-49a27d2822a0",
+        "4c31d65f-07b5-4054-9015-41491973a844",
+        "3eca4407-a589-4301-b705-1deb54a05811",
+        "f988018e-f8b3-4f17-8fb5-295beaa7e2d8",
+        "3650c340-2263-4df5-ae47-ae12ce32a2a8",
+        "e3276780-1806-400b-b0d4-60e0d617716f",
+        "db188f97-0a65-4adf-8961-c475dcc3bdd7",
+        "a2cacc27-cd35-4851-a46a-df0d72cd3751",
+        "9711f038-b4ec-41a6-94e6-25a3b4fcef74",
+        "9c4c4720-8396-4d67-994c-f4f80cf65192",
+        "44502907-eb57-4313-89d7-8430d50bf5ea",
+        "a5426a8a-f621-4d2f-961a-3870a645c21e",
+        "8ef93e89-d4a9-4d14-8ee5-bbe5f3a9149c",
+        "50eb62af-c2d1-4b2f-a7f0-3a70b9fe3941",
+        "9abee578-76d5-408f-99b6-68ba8d3c9f2d",
+        "03163857-ff98-4989-bb6a-65304c58107c",
+        "12ece44b-fca1-4975-9f1c-42f09212524b",
+        "26800335-a066-49b3-8e33-c6cfd804585b",
+        "fe40a2ef-bcae-441a-935a-eda090d0ac6d",
+        "6ec09042-5dc0-4593-b506-d4c57c3e14cd",
+        "45017da5-cb03-4826-ae6f-dafbe1e21339",
+        "9a7fb2a1-9ccb-4071-8ec9-b90fcf1eb546",
+        "1994c713-cf46-41da-be95-96dafbb55fe9",
+        "8413d484-f01c-4aca-9972-0b9e0b7189fc",
+        "e2cd4fa2-df13-4d54-a3c6-fcd788d8702f",
+        "60bd883f-4065-4df0-9bc7-ee37eb0f9fe3",
+        "a1077848-74cf-4c1d-87c7-96794646e7f4",
+        "290eaefd-2605-47de-a934-4dbd518cb7e1",
+        "89b86bf4-433b-44a1-954e-6bf8a5589bcf",
+        "060d2992-f0c8-49e7-a114-2f6d46a1cb00",
+        "9cf05f8a-62fc-4d8a-8738-6139d684183e",
+        "ea68da56-4094-4108-afa1-b7dea3165a50",
+        "1ccbb131-cd05-4157-a7ec-249e2211e7cd",
+        "36bc2eca-0861-4a0e-85a1-042262d653dc",
+        "41d6338a-d95e-4e4a-81ce-8ccde043c64e",
+        "4b9a761e-1070-4f03-aa0f-b6d4231b8dff",
+        "5d48fc5a-a7d0-4dce-837a-083bf793f716",
+        "864e3666-5aaf-4021-b6bb-785ed0714505",
+        "256baf94-ca71-4598-bd29-1181cbe2ef76",
+        "26a44be2-4db5-4784-ac40-ddfe69f8229d",
+        "6a48f187-2f09-468b-93e0-81627dbeacd6",
+        "0050ab09-124e-40ea-b7ca-723fcc60c3ed",
+        "194f2948-2932-4ef4-8047-b5be6311caeb",
+        "a7ed0949-baba-442d-a670-ac6d9a254e4a",
+        "b72b28e1-d364-4707-a414-430f3b126a2b",
+        "dbeae20d-f490-45f6-9de8-315e5f88b9a6",
+        "dd203f6b-bc08-4a8e-b0fc-4a772b2f1d7a",
+        "ec8ddded-418c-4078-9d67-31fc0ef17fce",
+        "0e486412-023d-42ff-b44f-04020c5a404d",
+        "b716be7a-81b6-4d0a-a55c-a7ca60352ef3",
+        "037bd847-68e1-4e7a-bdce-aa50933dbc00",
+        "10c417f5-603d-4bac-90f4-7365289adbc1",
+        "38411911-e90d-4b47-9d2b-39948be3e363",
+        "50c00273-d524-4d60-a9af-050d1cff51a3",
+        "2b94630b-b725-4715-ba72-3388d3c63cbd",
+        "0fdb8964-87a1-457b-bbcc-b6f05e44c695",
+        "3152390c-1764-4f4d-b6cd-98979c868286",
+        "79cd967d-f268-4bb8-9e84-0eafeac3307f",
+        "d651e790-2dc2-4522-b876-9f27af71c5f6",
+        "0b7820da-aceb-442e-9a5d-3fb3fcaa5254",
+        "b92a5f03-ac77-4f0e-907a-873c9d2f78bf",
+        "a4b82076-cf7d-4f7a-b24d-f12587d71590",
+        "02e217c8-9409-4223-a118-ae0487ce4fa5",
+        "28a43878-359f-4761-9a45-573fc7b593b1",
+        "80c7a2a2-79e7-4163-b53f-5583506021c1",
+        "51eb3610-a7ee-4fd6-9a71-65214aee0dd7",
+        "3aa4d2bf-2127-4c66-8858-e9a6b59dbd07",
+        "0377daa4-38b3-459d-8715-999532af1cb1",
+        "6a4fec4c-a1c3-4d20-8451-c6ecba886a82"
+      ]
+    },
+    {
+      "id": "12361189-9bbb-4e0b-a50d-58c94639e408",
+      "name": "Org Professor",
+      "description": "Can create projects",
+      "policies": [
+        "b0e10840-0332-41e7-91c8-330842e023a0",
+        "1291126f-21e9-42a3-b56c-0a7e1227a3d6",
+        "40c78f89-e227-4bfb-8b7d-5912dd054598",
+        "3eca4407-a589-4301-b705-1deb54a05811",
+        "a2cacc27-cd35-4851-a46a-df0d72cd3751",
+        "dbeae20d-f490-45f6-9de8-315e5f88b9a6",
+        "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
+        "1c1bb427-4f2f-40cb-ae03-6799199bbec8",
+        "b508e4ca-46bd-478c-9582-fa1c671aa03e",
+        "b716be7a-81b6-4d0a-a55c-a7ca60352ef3",
+        "037bd847-68e1-4e7a-bdce-aa50933dbc00",
+        "10c417f5-603d-4bac-90f4-7365289adbc1",
+        "50c00273-d524-4d60-a9af-050d1cff51a3"
+      ]
+    },
+    {
+      "id": "04b628cf-0d43-427d-ab07-3ff76d266f25",
+      "name": "Org Reader",
+      "description": "General organization user",
+      "policies": [
+        "40c78f89-e227-4bfb-8b7d-5912dd054598",
+        "dbeae20d-f490-45f6-9de8-315e5f88b9a6",
+        "7e830a72-19ac-4486-87a7-ca697f430fca",
+        "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
+        "50c00273-d524-4d60-a9af-050d1cff51a3"
+      ]
+    },
+    {
+      "id": "ff80e3f0-dc27-45b6-8a02-cc543395e752",
+      "name": "Project Admin",
+      "description": "Project Administrator can do all actions in a project",
+      "policies": [
+        "ca44caef-cdeb-4ca8-bbc7-2421be779934",
+        "03163857-ff98-4989-bb6a-65304c58107c",
+        "1291126f-21e9-42a3-b56c-0a7e1227a3d6",
+        "8ccf6d91-4c95-4cb6-965a-ca574dd2595c",
+        "9abee578-76d5-408f-99b6-68ba8d3c9f2d",
+        "7e830a72-19ac-4486-87a7-ca697f430fca",
+        "73f9137b-d3b9-49e5-8e3f-f779070ad8f8",
+        "fe40a2ef-bcae-441a-935a-eda090d0ac6d",
+        "8413d484-f01c-4aca-9972-0b9e0b7189fc",
+        "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
+        "b508e4ca-46bd-478c-9582-fa1c671aa03e",
+        "6ec09042-5dc0-4593-b506-d4c57c3e14cd",
+        "1994c713-cf46-41da-be95-96dafbb55fe9",
+        "1c1bb427-4f2f-40cb-ae03-6799199bbec8",
+        "5648e0e9-3354-4b5c-b815-29d01d98a551",
+        "45017da5-cb03-4826-ae6f-dafbe1e21339",
+        "a5f90d2c-51cd-468a-b304-7e5952025a4f",
+        "94b8b59d-178d-4b50-9a25-6ee2dd900eae",
+        "44502907-eb57-4313-89d7-8430d50bf5ea",
+        "b3bb875a-4e63-41ca-94ec-71fd0f2bad33",
+        "6af8ceea-969c-4b1c-9a6c-49a27d2822a0",
+        "9c4c4720-8396-4d67-994c-f4f80cf65192",
+        "b7d1724e-931c-4248-a793-d6cc1ce198f4",
+        "4c31d65f-07b5-4054-9015-41491973a844",
+        "9711f038-b4ec-41a6-94e6-25a3b4fcef74",
+        "36bc2eca-0861-4a0e-85a1-042262d653dc",
+        "8ffcf0ea-9b03-419a-ada9-a56e7033d317",
+        "f988018e-f8b3-4f17-8fb5-295beaa7e2d8",
+        "db188f97-0a65-4adf-8961-c475dcc3bdd7",
+        "17733e9d-9135-424d-9b44-621bd66064a3",
+        "3650c340-2263-4df5-ae47-ae12ce32a2a8",
+        "e3276780-1806-400b-b0d4-60e0d617716f",
+        "6717fdc0-45df-46f3-b7d3-0d4c4569a33a",
+        "557553f6-1ce4-44f1-a565-49e38a45b631",
+        "008dd3b9-a447-4f84-83e0-8143f0ba7454",
+        "c3cd9930-1778-4320-90e9-447d5011a2ee",
+        "0050ab09-124e-40ea-b7ca-723fcc60c3ed",
+        "194f2948-2932-4ef4-8047-b5be6311caeb",
+        "a7ed0949-baba-442d-a670-ac6d9a254e4a",
+        "b72b28e1-d364-4707-a414-430f3b126a2b",
+        "dbeae20d-f490-45f6-9de8-315e5f88b9a6",
+        "dd203f6b-bc08-4a8e-b0fc-4a772b2f1d7a",
+        "ec8ddded-418c-4078-9d67-31fc0ef17fce",
+        "0e486412-023d-42ff-b44f-04020c5a404d",
+        "b716be7a-81b6-4d0a-a55c-a7ca60352ef3",
+        "037bd847-68e1-4e7a-bdce-aa50933dbc00",
+        "10c417f5-603d-4bac-90f4-7365289adbc1",
+        "40c78f89-e227-4bfb-8b7d-5912dd054598",
+        "3eca4407-a589-4301-b705-1deb54a05811",
+        "a2cacc27-cd35-4851-a46a-df0d72cd3751",
+        "79cd967d-f268-4bb8-9e84-0eafeac3307f",
+        "d651e790-2dc2-4522-b876-9f27af71c5f6",
+        "0b7820da-aceb-442e-9a5d-3fb3fcaa5254",
+        "b92a5f03-ac77-4f0e-907a-873c9d2f78bf",
+        "a4b82076-cf7d-4f7a-b24d-f12587d71590",
+        "02e217c8-9409-4223-a118-ae0487ce4fa5",
+        "28a43878-359f-4761-9a45-573fc7b593b1",
+        "51eb3610-a7ee-4fd6-9a71-65214aee0dd7",
+        "3aa4d2bf-2127-4c66-8858-e9a6b59dbd07",
+        "0377daa4-38b3-459d-8715-999532af1cb1"
+      ]
+    },
+    {
+      "id": "1c57cc70-3d71-4785-a3eb-4d4f5efa3a5a",
+      "name": "Layer Admin",
+      "description": "User capable of editing non-private annotations of other users.",
+      "policies": [
+        "6717fdc0-45df-46f3-b7d3-0d4c4569a33a",
+        "557553f6-1ce4-44f1-a565-49e38a45b631",
+        "008dd3b9-a447-4f84-83e0-8143f0ba7454",
+        "17733e9d-9135-424d-9b44-621bd66064a3",
+        "3650c340-2263-4df5-ae47-ae12ce32a2a8",
+        "e3276780-1806-400b-b0d4-60e0d617716f",
+        "b7d1724e-931c-4248-a793-d6cc1ce198f4",
+        "4c31d65f-07b5-4054-9015-41491973a844",
+        "9711f038-b4ec-41a6-94e6-25a3b4fcef74",
+        "b3bb875a-4e63-41ca-94ec-71fd0f2bad33",
+        "6af8ceea-969c-4b1c-9a6c-49a27d2822a0",
+        "9c4c4720-8396-4d67-994c-f4f80cf65192",
+        "a5f90d2c-51cd-468a-b304-7e5952025a4f",
+        "94b8b59d-178d-4b50-9a25-6ee2dd900eae",
+        "44502907-eb57-4313-89d7-8430d50bf5ea",
+        "1c1bb427-4f2f-40cb-ae03-6799199bbec8",
+        "5648e0e9-3354-4b5c-b815-29d01d98a551",
+        "45017da5-cb03-4826-ae6f-dafbe1e21339",
+        "0050ab09-124e-40ea-b7ca-723fcc60c3ed",
+        "194f2948-2932-4ef4-8047-b5be6311caeb",
+        "a7ed0949-baba-442d-a670-ac6d9a254e4a",
+        "7e830a72-19ac-4486-87a7-ca697f430fca",
+        "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
+        "a4b82076-cf7d-4f7a-b24d-f12587d71590",
+        "02e217c8-9409-4223-a118-ae0487ce4fa5",
+        "28a43878-359f-4761-9a45-573fc7b593b1",
+        "0377daa4-38b3-459d-8715-999532af1cb1",
+        "3aa4d2bf-2127-4c66-8858-e9a6b59dbd07",
+        "51eb3610-a7ee-4fd6-9a71-65214aee0dd7"
+      ]
+    },
+    {
+      "id": "8b9d1af6-5713-4894-a3b8-ede3bac13347",
+      "name": "Project Student",
+      "description": "Users who can see and interact with projects they are a member of",
+      "policies": [
+        "ca44caef-cdeb-4ca8-bbc7-2421be779934",
+        "40c78f89-e227-4bfb-8b7d-5912dd054598",
+        "b7d1724e-931c-4248-a793-d6cc1ce198f4",
+        "c3cd9930-1778-4320-90e9-447d5011a2ee",
+        "1291126f-21e9-42a3-b56c-0a7e1227a3d6",
+        "7e830a72-19ac-4486-87a7-ca697f430fca",
+        "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
+        "b716be7a-81b6-4d0a-a55c-a7ca60352ef3",
+        "a4b82076-cf7d-4f7a-b24d-f12587d71590",
+        "51eb3610-a7ee-4fd6-9a71-65214aee0dd7",
+        "79cd967d-f268-4bb8-9e84-0eafeac3307f"
+      ]
+    },
+    {
+      "id": "b3152bcd-dd32-45b2-82e8-e5cfc50f24ac",
+      "name": "Layer Student",
+      "description": "Users who can see and interact with layers",
+      "policies": [
+        "a5f90d2c-51cd-468a-b304-7e5952025a4f",
+        "6717fdc0-45df-46f3-b7d3-0d4c4569a33a",
+        "557553f6-1ce4-44f1-a565-49e38a45b631",
+        "17733e9d-9135-424d-9b44-621bd66064a3",
+        "3650c340-2263-4df5-ae47-ae12ce32a2a8",
+        "e3276780-1806-400b-b0d4-60e0d617716f",
+        "40c78f89-e227-4bfb-8b7d-5912dd054598",
+        "0050ab09-124e-40ea-b7ca-723fcc60c3ed",
+        "1c1bb427-4f2f-40cb-ae03-6799199bbec8",
+        "5648e0e9-3354-4b5c-b815-29d01d98a551",
+        "008dd3b9-a447-4f84-83e0-8143f0ba7454",
+        "b3bb875a-4e63-41ca-94ec-71fd0f2bad33",
+        "45017da5-cb03-4826-ae6f-dafbe1e21339",
+        "8ffcf0ea-9b03-419a-ada9-a56e7033d317",
+        "dbeae20d-f490-45f6-9de8-315e5f88b9a6",
+        "7e830a72-19ac-4486-87a7-ca697f430fca",
+        "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
+        "b508e4ca-46bd-478c-9582-fa1c671aa03e",
+        "6ec09042-5dc0-4593-b506-d4c57c3e14cd",
+        "b716be7a-81b6-4d0a-a55c-a7ca60352ef3",
+        "a4b82076-cf7d-4f7a-b24d-f12587d71590",
+        "51eb3610-a7ee-4fd6-9a71-65214aee0dd7",
+        "79cd967d-f268-4bb8-9e84-0eafeac3307f"
+      ]
+    }
+  ],
+  "org_groups": [
+    {
+      "id": "350abe76-937b-4a9b-9600-9b1f856db250",
+      "name": "Org Admins",
+      "description": "All Policies",
+      "role_id": "18b33e9e-c16e-462d-b683-e0562475e661",
+      "is_admin": true
+    },
+    {
+      "id": "f918b2f8-f587-4ee1-9f2d-35b3aed0b1e6",
+      "name": "Org Professor",
+      "description": "Project Creators ",
+      "role_id": "12361189-9bbb-4e0b-a50d-58c94639e408"
+    },
+    {
+      "id": "f2e37e37-3b36-4833-b88d-f58e5c018ef5",
+      "name": "Org Readers",
+      "description": "Default user read policies",
+      "role_id": "04b628cf-0d43-427d-ab07-3ff76d266f25",
+      "is_admin": false,
+      "is_default": true
+    }
+  ],
+  "project_groups": [
+    {
+      "id": "9b10f06c-e949-427d-8219-c641dfdd1743",
+      "name": "Project Admins",
+      "description": "High level admins for individual projects",
+      "role_id": "ff80e3f0-dc27-45b6-8a02-cc543395e752",
+      "is_admin": true,
+      "is_default": false
+    },
+    {
+      "id": "137c1353-41de-4d1a-942c-6168c8568367",
+      "name": "Project Students",
+      "description": "Users who are a member of this project",
+      "role_id": "8b9d1af6-5713-4894-a3b8-ede3bac13347",
+      "is_admin": false,
+      "is_default": true
+    }
+  ],
+  "layer_groups": [
+    {
+      "id": "4f1933e9-6f58-4829-92f7-153a592907b2",
+      "name": "Layer Admin",
+      "description": "User able to manage and update layers",
+      "role_id": "1c57cc70-3d71-4785-a3eb-4d4f5efa3a5a",
+      "is_admin": true,
+      "is_default": false
+    },
+    {
+      "id": "dceadc86-1b03-4ee7-99d8-a9b662479ae6",
+      "name": "Layer Student",
+      "description": "Users who are members of this layer can create annotations.",
+      "role_id": "b3152bcd-dd32-45b2-82e8-e5cfc50f24ac",
+      "is_admin": false,
+      "is_default": true
+    }
+  ],
+  "admin": {
+    "admin_email": "admin@example.com",
+    "admin_groups": [
+      "350abe76-937b-4a9b-9600-9b1f856db250"
+    ]
+  },
+  "branding": {
+    "platform_name": "Recogito Studio",
+    "site_name": "Recogito",
+    "welcome_blurb": "Welcome to Recogito Studio",
+    "site_color": "orange",
+    "home_banner": "https://iiif-staging.archivengine.com/iiif/3/1ylyaluscm668rynn5a7d6mwsqe6;1/full/max/0/default.jpg",
+    "background_color": "black",
+    "footer_message": "Powered by Recogito Studio",
+    "top_logos_enabled": true,
+    "bottom_logos_enabled": true,
+    "contrast_color": "white",
+    "favicon": "favicon.png",
+    "alt_favicon": true
+  },
+  "authentication": {
+    "methods": [
+      {
+        "name": "User Name and Password",
+        "type": "username_password"
+      }
+    ]
+  },
+  "dynamic_text": {
+    "public_document_warning": []
+  },
+  "supported_languages": [
+    "en",
+    "de"
+  ],
+  "default_language": "en"
+}
