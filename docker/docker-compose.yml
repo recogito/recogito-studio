@@ -441,5 +441,19 @@ services:
       - CANTALOUPE_DELEGATE_SCRIPT_PATHNAME=/etc/cantaloupe/delegates.rb
       - JDK_JAVA_OPTS="--add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED"
 
+  client:
+    image: recogito-studio-client:latest
+    container_name: client
+    ports:
+      - "8090:3000"
+    environment:
+      - PUBLIC_SUPABASE=${PUBLIC_SUPABASE}
+      - SUPABASE_SERVERCLIENT_URL=${SUPABASE_SERVERCLIENT_URL}
+      - PUBLIC_SUPABASE_API_KEY=${ANON_KEY}
+      - PUBLIC_USERSNAP_GLOBAL_API_KEY=${USERSNAP_GLOBAL_API_KEY}
+      - PUBLIC_USERSNAP_PROJECT_API_KEY=${USERSNAP_PROJECT_API_KEY}
+      - ROOM_SECRET=${ROOM_SECRET}
+      - PUBLIC_IIIF_CANTALOUPE_PATH=${PUBLIC_IIIF_CANTALOUPE_PATH}
+
 volumes:
   db-config:

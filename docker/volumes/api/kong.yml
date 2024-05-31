@@ -239,3 +239,18 @@ services:
       - name: basic-auth
         config:
           hide_credentials: true
+
+  ## Secure IIIF Route
+  - name: iiif
+    _comment: 'IIIF: /* -> http://cantaloup:8182/iiif/v3/*'
+    url: http://cantaloupe:8182/iiif/v3
+    routes:
+      - name: iiif-all
+        strip_path: true
+        paths:
+          - /iiif/
+    plugins:
+      - name: cors
+      - name: key-auth
+        config:
+          hide_credentials: true
