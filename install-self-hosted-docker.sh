@@ -48,6 +48,9 @@ echo "Cloning recogito-server"
 
 git clone --depth 1 https://github.com/recogito/recogito-server.git
 
+# Add supabase
+npm i supabase --save-dev
+
 # Remove the default server config
 rm -f ./recogito-server/config.json
 
