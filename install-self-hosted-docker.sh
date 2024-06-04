@@ -40,7 +40,7 @@ docker compose pull
 
 docker compose up -d
 
-docker compose -f docker-compose.client.yml
+docker compose -f ./docker-compose.client.yml up -d
 
 cd ..
 

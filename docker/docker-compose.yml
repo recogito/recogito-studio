@@ -424,6 +424,7 @@ services:
     command: ["--config", "etc/vector/vector.yml"]
 
   cantaloupe:
+    container_name: cantaloupe
     image: "uclalibrary/cantaloupe:5.0.5-7"
     ports:
       - "8182:8182"
