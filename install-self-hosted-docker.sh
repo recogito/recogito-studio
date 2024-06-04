@@ -40,6 +40,8 @@ docker compose pull
 
 docker compose up -d
 
+docker compose -f docker-compose.client.yml
+
 cd ..
 
 # Clone the server src
@@ -59,9 +61,10 @@ cp ./docker/config/config.json ./recogito-server/config.json
 
 cd ./recogito-server
 
+
 npm install
 
-supabase db push --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres
+npx supabase db push --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres
 
 sleep 5
 

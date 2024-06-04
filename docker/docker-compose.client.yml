@@ -1,0 +1,23 @@
+# Usage
+#   Start:          docker compose up
+#   With helpers:   docker compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml up
+#   Stop:           docker compose down
+#   Destroy:        docker compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml down -v --remove-orphans
+
+name: supabase
+version: "3.8"
+
+services:
+  client:
+    image: recogito-studio-client:latest
+    container_name: client
+    ports:
+      - "8090:3000"
+    environment:
+      - PUBLIC_SUPABASE=${PUBLIC_SUPABASE}
+      - SUPABASE_SERVERCLIENT_URL=${SUPABASE_SERVERCLIENT_URL}
+      - PUBLIC_SUPABASE_API_KEY=${ANON_KEY}
+      - PUBLIC_USERSNAP_GLOBAL_API_KEY=${USERSNAP_GLOBAL_API_KEY}
+      - PUBLIC_USERSNAP_PROJECT_API_KEY=${USERSNAP_PROJECT_API_KEY}
+      - ROOM_SECRET=${ROOM_SECRET}
+      - PUBLIC_IIIF_CANTALOUPE_PATH=${PUBLIC_IIIF_CANTALOUPE_PATH}
