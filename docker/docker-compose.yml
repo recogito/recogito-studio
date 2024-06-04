@@ -23,6 +23,8 @@ services:
       timeout: 5s
       interval: 5s
       retries: 3
+    ports:
+      - 3000:8000/tcp
     depends_on:
       analytics:
         condition: service_healthy
