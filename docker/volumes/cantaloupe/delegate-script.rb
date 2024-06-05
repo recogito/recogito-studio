@@ -1,11 +1,11 @@
 ##
 # This script is released under the CC0 1.0 Universal (CC0 1.0) Public Domain
-# Dedication. It has been developed to access the Supabase Storage API with 
+# Dedication. It has been developed to access the Supabase Storage API with
 # Cantaloupe. API access is preceded by pre-authorization, as Cantaloupe may load
 # resources from the cache. In these cases, unauthorized access to protected
 # resources is prevented by always checking whether the request to the storage
 # API is authorized.
-# 
+#
 # The script has also been tested for access to resources via Httpsource that
 # do not require any authorization.
 #
@@ -47,7 +47,7 @@ class CustomDelegate
   def extra_iiif3_information_response_keys(options = {})
     {}
   end
-  
+
   # Retrieves resource information for the HTTP source.
   #
   # @param options [Hash] Options for retrieving resource information (not used).
@@ -86,7 +86,7 @@ class CustomDelegate
   end
 
   private
-  
+
   # Extracts the bearer token from the request headers.
   #
   # @param request_headers [Hash] Request headers.
@@ -115,7 +115,7 @@ class CustomDelegate
     # Attempt to access the resource using the provided token
     uri = URI(@url_prefix)
     uri.path += "/#{context['identifier']}" if context['identifier']
-    
+
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = uri.scheme == 'https'
 
@@ -123,6 +123,8 @@ class CustomDelegate
     request['Authorization'] = "Bearer #{bearer_token}" if bearer_token
 
     response = http.request(request)
+
+    puts "resource_accessible response code #{response.code}"
 
     # Return true if the response code indicates success (2xx status code)
     return response.code.start_with?('2')
