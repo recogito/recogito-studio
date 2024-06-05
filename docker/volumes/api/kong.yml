@@ -250,7 +250,4 @@ services:
         paths:
           - /iiif/
     plugins:
-      - name: cors
-      - name: key-auth
-        config:
-          hide_credentials: true          
+      - name: cors        
