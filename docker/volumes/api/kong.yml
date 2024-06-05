@@ -249,5 +249,3 @@ services:
         strip_path: true
         paths:
           - /iiif/
-    plugins:
-      - name: cors
