@@ -249,3 +249,8 @@ services:
         strip_path: true
         paths:
           - /iiif/
+    plugins:
+      - name: cors
+      - name: key-auth
+        config:
+          hide_credentials: true          
