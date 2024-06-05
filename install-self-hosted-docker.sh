@@ -70,3 +70,14 @@ sleep 5
 
 node ./create-default-groups.js -f ./config.json
 
+# Remove the client and server repos
+
+echo "Removing repositories"
+
+cd ..
+
+rm -rf ./recogito-client/
+rm -rf ./recogito-server/
+
+echo "Recogito Studio Installed!"
+

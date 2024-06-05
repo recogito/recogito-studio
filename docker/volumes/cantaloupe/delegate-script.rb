@@ -112,8 +112,6 @@ class CustomDelegate
     # Check if the bearer token is present in the context
     bearer_token = extract_bearer_token(context['request_headers'])
 
-    puts "Bearer Token: #{bearer_token}"
-
     # Attempt to access the resource using the provided token
     uri = URI(@url_prefix)
     uri.path += "/#{context['identifier']}" if context['identifier']
