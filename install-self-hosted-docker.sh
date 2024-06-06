@@ -62,7 +62,7 @@ cd ./recogito-server
 
 npm install
 
-npx supabase db push --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres
+SUPABASE_HOST=$SITE_URL && npx supabase db push --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres
 
 sleep 5
 

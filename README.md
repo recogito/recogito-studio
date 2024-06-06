@@ -6,6 +6,13 @@ In the example below we will install Recogito Studio on a [Digital Ocean Droplet
 
 These instructions assume that you have an available domain, with access to create new DNS records.
 
+Recogito Studio requires two domains.  One for the client and one for the server (although both will be served by the same instance in this example). For the purposes of this example we will be using:
+
+https://server.example.com
+https://client.example.com
+
+
+
 ## Digital Ocean Example
 
 If you do not have an account on Digital Ocean, create one and then proceed as below.
@@ -262,7 +269,206 @@ You should see the Nginx welcome screen:
 
 ![Nginx welcome](./assets/images/nginx-welcome.png)
 
-We are going to do the rest of the Nginx setup after we have installed Recogito Studio.
+### Clone Recogito Studio (This repository)
+
+The installation of Recogito Studio is contained in this repository.  We will now clone the GitHub repository to our instance:
+
+~~~
+git clone --depth 1 https://github.com/recogito/recogito-studio.git
+~~~
+
+Once cloned change to the recogito-studio directory:
+
+~~~
+cd ./recogito-studio
+~~~
+
+### Setting up Nginx reverse proxy
+
+As stated previously, there are two URLs served from the instance: the client URL and the backend URL.  To complete the Nginx setup you need to activate both routes.
+
+There are two template configuration files included in the recogito-studio repository.
+
+nginx.client.example.com
+nginx.server.example.com
+
+The following assumes you are still in the recogito-studio directory and have setup your urls on your DNS server.
+
+#### Copy the client configuration and update
+
+First you need to copy the Nginx configuration for the client routes to the Nginx sites-available directory. 
+
+Replace client.example.com with your client url.
+~~~
+sudo cp ./nginx.client.example.com /etc/nginx/sites-available/client.example.com
+~~~
+
+Now we customize this configuration to your setup. Again using the nano text editor:
+
+~~~
+sudo nano /etc/nginx/sites-available/client.example.com
+~~~
+
+![Edit client configuration](./assets/images/nginx-1.png)
+
+Here simply replace client.example.com with your client url
+
+#### Copy the server configuration and update
+
+Again copy the template, replacing server.example.com with your server URL.
+
+~~~
+sudo cp ./nginx.server.example.com /etc/nginx/sites-available/server.example.com
+~~~
+
+And edit, replacing with the name created above:
+
+~~~
+sudo nano /etc/nginx/sites-available/server.example.com
+~~~
+
+![Edit server configuration](./assets/images/nginx-2.png)
+
+Here we replace server.example.com for the `server_name` attribute with your correct server URL.
+
+In the Preflighted Requests section, on the line `add_header "Access-Control-Allow-Origin"  https://server.example.com;` replace client.example.com with your correct value for your client URL.
+
+Finally near the bottom replace the url in `add_header "Access-Control-Allow-Origin"  https://client.example.com always;` with your client URL.
+
+#### Update nginx.conf
+
+We need to make a small modification to the default Nginx configuration.
+
+~~~
+sudo nano /etc/nginx/nginx.conf
+~~~
+
+![Update nginx.conf](./assets/images/nginx-3.png)
+
+In the http block at top paste this value:
+
+~~~
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+        '' close;
+    }
+~~~
+
+#### Link the configuration
+
+Nginx has two directories, sites-available and sites-enabled.  You enable a site by creating a symbolic link. Be sure to replace the example.com URLs with your site's values:
+
+~~~
+sudo ln -s /etc/nginx/sites-available/server.example.com /etc/nginx/sites-enabled/
+
+sudo ln -s /etc/nginx/sites-available/client.example.com /etc/nginx/sites-enabled/
+~~~
+
+#### Restart Nginx with the new configurations
+
+First let's verify the configurations.
+
+~~~
+sudo nginx -t
+~~~
+
+Sample output:
+
+~~~
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+~~~
+
+And now restart Nginx to make the configuration active:
+
+~~~
+sudo systemctl restart nginx
+~~~
+
+### Add Let'ss Encrypt certificates
+
+In order of our HTTPS routes valid, we need domain certificates.  The is easily done with [Let's Encrypt](https://letsencrypt.org/).  We will use a the procedure outlines [here](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-22-04).
+
+#### Install Let's Encrypt
+
+The Let's Encrypt package is available via snap. First we will make sure snap is up to date:
+
+~~~
+sudo snap install core; sudo snap refresh core
+~~~
+
+Install certbot.  This is an automatically renewing certificate service.
+
+~~~
+sudo snap install --classic certbot
+~~~
+
+And link it to `/usr/bin`:
+
+~~~
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+~~~
+
+Generate and install a certificate for the client routes. As always, change client.example.com to your client URL:
+
+~~~
+sudo certbot --nginx -d client.example.com
+~~~
+
+You will need to provide a email for urgent notices and answer Yes to the terms of service.  You can answer how you like about sharing your email with [EFF](https://www.eff.org/).
+
+Do the same for the server routes.
+
+~~~
+sudo certbot --nginx -d server.example.com
+~~~
+
+#### Confirm auto-renewal
+
+Certbot will automatically renew your certificate before its expiration.  It is a good idea to verify this will work:
+
+~~~
+sudo systemctl status snap.certbot.renew.service
+~~~
+
+Sample output:
+
+~~~
+○ snap.certbot.renew.service - Service for snap application certbot.renew
+     Loaded: loaded (/etc/systemd/system/snap.certbot.renew.service; static)
+     Active: inactive (dead)
+TriggeredBy: ● snap.certbot.renew.timer
+~~~
+
+
+And do a dry run of the renewal process:
+
+~~~
+sudo certbot renew --dry-run
+~~~
+
+Sample Output:
+
+~~~
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /etc/letsencrypt/renewal/client.example.com.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Account registered.
+Simulating renewal of an existing certificate for client.example.com
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /etc/letsencrypt/renewal/server.exmaple.com.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Simulating renewal of an existing certificate for server.example.com
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Congratulations, all simulated renewals succeeded:
+  /etc/letsencrypt/live/client.example.com/fullchain.pem (success)
+  /etc/letsencrypt/live/server.example.com/fullchain.pem (success)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+~~~
 
 
 ### Install dependencies
@@ -305,24 +511,111 @@ Installing NPM will also install node js.
 sudo apt install npm
 ~~~
 
-### Clone Recogito Studio (This repository)
+### Update the environment variables
 
-```
-git clone --depth 1 https://github.com/recogito/recogito-studio.git
-```
+The recogito-studio repository contains the necessary environment variables to secure and run the Recogito instance.  It is important to secure this setup by changing the example .env file to the correct values.
 
-```
-cd ./recogito-studio
-```
+First copy the environment variable example file.
 
-### Update ./docker/.env
+~~~
+cp ./docker/.env.example ./docker/.env
+~~~
 
-Update the .env file in ./docker with appropriate variables
+Now use a text editor to change the following values in your .env files.  We will be using the nano editor here which is included in the Digital Ocean Ubuntu image.
+
+~~~
+nano ./docker/.env
+~~~
+
+![Nano Editor](./assets/images/nano-editor-1.png)
+
+Many of the environment variables should be left as is, but the following need to be updated to ensure proper operation of the installation and to secure it from external modification.
+
+#### POSTGRES_PASSWORD
+
+Set POSTGRES_PASSWORD to an appropriately secure password. We recommend one at least 12 characters long, with uppercase, lowercase, and numeric characters. We do not recommend using special characters as the password is often used in URLs and some special characters are not easily translated to URLs.
+
+#### JWT_SECRET
+
+Set the JWT_SECRET to an appropriately formatted string.  The most straightforward way to do this is with openssl which is already installed with Digital Ocean Ubuntu images:
+
+~~~
+openssl rand -base64 36
+~~~
+
+Sample output:
+
+~~~
+MpfZck0AivhcZhKuzPN3Iofm+D0yumW5g5DTD7EgY2x8SvJR
+~~~
+
+#### ANON_KEY
+
+The Recogito Studio server is based on [Supabase](https://supabase.com/) platform. They have tools that can generate appropriate and random keys for use with Supabase.
+
+Go to the [Securing your services sections here](https://supabase.com/docs/guides/self-hosting/docker#securing-your-services).
+
+![Securing Supabase](./assets/images/supabase-1.png)
+
+Enter your JWT_SECRET secret you generated above and choose ANON_KEY as the Preconfigured Payload and press the Generate JWT button. Copy the value and replace it in your .env file.
+
+#### SERVICE_ROLE_KEY
+
+On the same page as above, choose SERVICE_KEY as the Preconfigured Payload (with the same JWT Secret) and press the Generate JWT button. Copy the value and replace it in your .env file.
+
+#### DASHBOARD_PASSWORD
+
+Supabase has a client application that allows management of the Supabase platform.  Generate an appropriate and secure password to secure access. Again we recommend one at least 12 characters long.  It can contain special characters.
+
+#### SITE_URL
+
+Change this to the domain you have configured for the server URL. Here we will be using https://server.example.com
+
+#### ORG_ADMIN_PW
+
+An Org admin is a Recogito Studio Superuser. An initial Org Admin is created for your installation with an email address of admin@example.com. Create an appropriate and secure password for this account. Again we recommend one at least 12 characters long.  It can contain special characters.
+
+#### ROOM_SECRET
+
+The room secret is to secure the realtime communications channel. Again we will use openssl:
+
+~~~
+openssl rand -base64 24
+~~~
+
+Sample output:
+
+~~~
+MEqms2zIVGarS6bSql6gm64CECWw0ziz
+~~~
+
+#### Save your .env file
+
+In the case of nano this is done with a <ctrl>o and then hitting return. <ctrl>x will exit nano.
 
 ### Run the installation script
 
+We are now ready to install and bring up the docker containers which comprise the Recogito Studio platform. We have provided an install script which retrieves and installs supabase, the Recogito server rules and logic, and builds and installs the Recogito client.
+
 From the recogito-studio directory run the install script
 
-```
-bash ./install-self-hosted-docker.sh
-```
+~~~
+sudo bash ./install-self-hosted-docker.sh
+~~~
+
+You may need to respond Yes (Y) to the db push.
+
+### Complete Nginx Setup
+
+
+
+### Test the site
+
+The site should now be up and running, secured by https, and ready for use.
+
+Using your browser navigate to your client URL.  You should see:
+
+![client](./assets/images/client-site-1.png)
+
+Go ahead and sign in with the initial Org Admin which has a username of `admin.example.com`
+ 
