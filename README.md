@@ -283,7 +283,141 @@ Once cloned change to the recogito-studio directory:
 cd ./recogito-studio
 ~~~
 
-### Setting up Nginx reverse proxy
+### Install dependencies
+
+There are a few additional dependencies we need to have installed in order to install Recogito Studio.
+
+#### Git
+
+Git is the industry standard version control system and the installation process requires that it be installed.
+
+Git is often already installed on many Cloud OS instances, which is true for Digital Oceans Ubuntu droplets. Make sure git is installed:
+
+~~~
+git --version
+~~~
+
+Output:
+
+~~~
+git version 2.43.0
+~~~
+
+#### Docker
+
+Docker is a container generation and management system. We will install it using the [SNAP](https://snapcraft.io/) packager that is standard on Digital Ocean Linux images.
+
+Install Docker:
+
+~~~
+snap install docker
+~~~
+
+#### NPM
+
+NPM (Node Package Manager) is a package manager and management tool for [node js](https://nodejs.org/en) which is a Javascript runtime environment. There are a number of tools and applications in the Recogito Studio platform that require NPM and node js.
+
+Installing NPM will also install node js.
+
+~~~
+sudo apt install npm
+~~~
+
+### Update the environment variables
+
+The recogito-studio repository contains the necessary environment variables to secure and run the Recogito instance.  It is important to secure this setup by changing the example .env file to the correct values.
+
+First copy the environment variable example file.
+
+~~~
+cp ./docker/.env.example ./docker/.env
+~~~
+
+Now use a text editor to change the following values in your .env files.  We will be using the nano editor here which is included in the Digital Ocean Ubuntu image.
+
+~~~
+nano ./docker/.env
+~~~
+
+![Nano Editor](./assets/images/nano-editor-1.png)
+
+Many of the environment variables should be left as is, but the following need to be updated to ensure proper operation of the installation and to secure it from external modification.
+
+#### POSTGRES_PASSWORD
+
+Set POSTGRES_PASSWORD to an appropriately secure password. We recommend one at least 12 characters long, with uppercase, lowercase, and numeric characters. We do not recommend using special characters as the password is often used in URLs and some special characters are not easily translated to URLs.
+
+#### JWT_SECRET
+
+Set the JWT_SECRET to an appropriately formatted string.  The most straightforward way to do this is with openssl which is already installed with Digital Ocean Ubuntu images:
+
+~~~
+openssl rand -base64 36
+~~~
+
+Sample output:
+
+~~~
+MpfZck0AivhcZhKuzPN3Iofm+D0yumW5g5DTD7EgY2x8SvJR
+~~~
+
+#### ANON_KEY
+
+The Recogito Studio server is based on [Supabase](https://supabase.com/) platform. They have tools that can generate appropriate and random keys for use with Supabase.
+
+Go to the [Securing your services sections here](https://supabase.com/docs/guides/self-hosting/docker#securing-your-services).
+
+![Securing Supabase](./assets/images/supabase-1.png)
+
+Enter your JWT_SECRET secret you generated above and choose ANON_KEY as the Preconfigured Payload and press the Generate JWT button. Copy the value and replace it in your .env file.
+
+#### SERVICE_ROLE_KEY
+
+On the same page as above, choose SERVICE_KEY as the Preconfigured Payload (with the same JWT Secret) and press the Generate JWT button. Copy the value and replace it in your .env file.
+
+#### DASHBOARD_PASSWORD
+
+Supabase has a client application that allows management of the Supabase platform.  Generate an appropriate and secure password to secure access. Again we recommend one at least 12 characters long.  It can contain special characters.
+
+#### SITE_URL
+
+Change this to the domain you have configured for the server URL. Here we will be using https://server.example.com
+
+#### ORG_ADMIN_PW
+
+An Org admin is a Recogito Studio Superuser. An initial Org Admin is created for your installation with an email address of admin@example.com. Create an appropriate and secure password for this account. Again we recommend one at least 12 characters long.  It can contain special characters.
+
+#### ROOM_SECRET
+
+The room secret is to secure the realtime communications channel. Again we will use openssl:
+
+~~~
+openssl rand -base64 24
+~~~
+
+Sample output:
+
+~~~
+MEqms2zIVGarS6bSql6gm64CECWw0ziz
+~~~
+
+#### Save your .env file
+
+In the case of nano this is done with a <ctrl>o and then hitting return. <ctrl>x will exit nano.
+
+### Run the installation script
+
+We are now ready to install and bring up the docker containers which comprise the Recogito Studio platform. We have provided an install script which retrieves and installs supabase, the Recogito server rules and logic, and builds and installs the Recogito client.
+
+From the recogito-studio directory run the install script
+
+~~~
+sudo bash ./install-self-hosted-docker.sh
+~~~
+
+You may need to respond Yes (Y) to the db push.
+
+### Complete Nginx Setup
 
 As stated previously, there are two URLs served from the instance: the client URL and the backend URL.  To complete the Nginx setup you need to activate both routes.
 
@@ -471,143 +605,6 @@ Congratulations, all simulated renewals succeeded:
 ~~~
 
 
-### Install dependencies
-
-There are a few additional dependencies we need to have installed in order to install Recogito Studio.
-
-#### Git
-
-Git is the industry standard version control system and the installation process requires that it be installed.
-
-Git is often already installed on many Cloud OS instances, which is true for Digital Oceans Ubuntu droplets. Make sure git is installed:
-
-~~~
-git --version
-~~~
-
-Output:
-
-~~~
-git version 2.43.0
-~~~
-
-#### Docker
-
-Docker is a container generation and management system. We will install it using the [SNAP](https://snapcraft.io/) packager that is standard on Digital Ocean Linux images.
-
-Install Docker:
-
-~~~
-snap install docker
-~~~
-
-#### NPM
-
-NPM (Node Package Manager) is a package manager and management tool for [node js](https://nodejs.org/en) which is a Javascript runtime environment. There are a number of tools and applications in the Recogito Studio platform that require NPM and node js.
-
-Installing NPM will also install node js.
-
-~~~
-sudo apt install npm
-~~~
-
-### Update the environment variables
-
-The recogito-studio repository contains the necessary environment variables to secure and run the Recogito instance.  It is important to secure this setup by changing the example .env file to the correct values.
-
-First copy the environment variable example file.
-
-~~~
-cp ./docker/.env.example ./docker/.env
-~~~
-
-Now use a text editor to change the following values in your .env files.  We will be using the nano editor here which is included in the Digital Ocean Ubuntu image.
-
-~~~
-nano ./docker/.env
-~~~
-
-![Nano Editor](./assets/images/nano-editor-1.png)
-
-Many of the environment variables should be left as is, but the following need to be updated to ensure proper operation of the installation and to secure it from external modification.
-
-#### POSTGRES_PASSWORD
-
-Set POSTGRES_PASSWORD to an appropriately secure password. We recommend one at least 12 characters long, with uppercase, lowercase, and numeric characters. We do not recommend using special characters as the password is often used in URLs and some special characters are not easily translated to URLs.
-
-#### JWT_SECRET
-
-Set the JWT_SECRET to an appropriately formatted string.  The most straightforward way to do this is with openssl which is already installed with Digital Ocean Ubuntu images:
-
-~~~
-openssl rand -base64 36
-~~~
-
-Sample output:
-
-~~~
-MpfZck0AivhcZhKuzPN3Iofm+D0yumW5g5DTD7EgY2x8SvJR
-~~~
-
-#### ANON_KEY
-
-The Recogito Studio server is based on [Supabase](https://supabase.com/) platform. They have tools that can generate appropriate and random keys for use with Supabase.
-
-Go to the [Securing your services sections here](https://supabase.com/docs/guides/self-hosting/docker#securing-your-services).
-
-![Securing Supabase](./assets/images/supabase-1.png)
-
-Enter your JWT_SECRET secret you generated above and choose ANON_KEY as the Preconfigured Payload and press the Generate JWT button. Copy the value and replace it in your .env file.
-
-#### SERVICE_ROLE_KEY
-
-On the same page as above, choose SERVICE_KEY as the Preconfigured Payload (with the same JWT Secret) and press the Generate JWT button. Copy the value and replace it in your .env file.
-
-#### DASHBOARD_PASSWORD
-
-Supabase has a client application that allows management of the Supabase platform.  Generate an appropriate and secure password to secure access. Again we recommend one at least 12 characters long.  It can contain special characters.
-
-#### SITE_URL
-
-Change this to the domain you have configured for the server URL. Here we will be using https://server.example.com
-
-#### ORG_ADMIN_PW
-
-An Org admin is a Recogito Studio Superuser. An initial Org Admin is created for your installation with an email address of admin@example.com. Create an appropriate and secure password for this account. Again we recommend one at least 12 characters long.  It can contain special characters.
-
-#### ROOM_SECRET
-
-The room secret is to secure the realtime communications channel. Again we will use openssl:
-
-~~~
-openssl rand -base64 24
-~~~
-
-Sample output:
-
-~~~
-MEqms2zIVGarS6bSql6gm64CECWw0ziz
-~~~
-
-#### Save your .env file
-
-In the case of nano this is done with a <ctrl>o and then hitting return. <ctrl>x will exit nano.
-
-### Run the installation script
-
-We are now ready to install and bring up the docker containers which comprise the Recogito Studio platform. We have provided an install script which retrieves and installs supabase, the Recogito server rules and logic, and builds and installs the Recogito client.
-
-From the recogito-studio directory run the install script
-
-~~~
-sudo bash ./install-self-hosted-docker.sh
-~~~
-
-You may need to respond Yes (Y) to the db push.
-
-### Complete Nginx Setup
-
-
 
 ### Test the site
 
@@ -617,5 +614,5 @@ Using your browser navigate to your client URL.  You should see:
 
 ![client](./assets/images/client-site-1.png)
 
-Go ahead and sign in with the initial Org Admin which has a username of `admin.example.com`
+Go ahead and sign in with the initial Org Admin which has a username of `admin.example.com` and the password you set in the .env file for `ORG_ADMIN_PW`.
  
