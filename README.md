@@ -606,7 +606,7 @@ Congratulations, all simulated renewals succeeded:
 
 
 
-### Test the site
+### Test the client
 
 The site should now be up and running, secured by https, and ready for use.
 
@@ -614,5 +614,35 @@ Using your browser navigate to your client URL.  You should see:
 
 ![client](./assets/images/client-site-1.png)
 
-Go ahead and sign in with the initial Org Admin which has a username of `admin.example.com` and the password you set in the .env file for `ORG_ADMIN_PW`.
+Go ahead and sign in with the initial Org Admin which has a username of `admin@example.com` and the password you set in the .env file for `ORG_ADMIN_PW`.
+
+### Test access to studio
+
+Using your browser navigate to your server URL.  The username will be `supabase` and the password you set in the .env file for `DASHBOARD_PASSWORD`.
+
+The Supabase studio client gives you access to the DB and allows for User creation. Detailed usage can be seen [here](https://supabase.com/docs).
+
+## What's next, what's missing?
+
+There are a few more advanced topics not discussed here that will be detailed in future releases.
+
+- Configuration and Customization
+	
+	Many aspects of the UI and policy model can be customized to your needs.  
+	
+- SMTP Setup
+	
+	SMTP integration for things like password resets, invitations, etc.
+	
+- Logging
+
+	Supabase can be configured to connect and send data to [Logflare](https://logflare.app/).
+	
+- Using External Postgres Databases
+
+	The self-hosted deployment could be customized to connect to a remote Postgres DB cluster.
+	
+	
+
+
  
