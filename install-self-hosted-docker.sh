@@ -36,11 +36,9 @@ docker build --no-cache -t recogito-studio-client:latest .
 echo "Starting Supabase"
 cd ../docker
 
-docker compose pull
+docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml pull
 
-docker compose up -d
-
-docker compose -f ./docker-compose.client.yml up -d
+docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d
 
 cd ..
 
