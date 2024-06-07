@@ -9,6 +9,7 @@ These instructions assume that you have an available domain, with access to crea
 Recogito Studio requires two domains.  One for the client and one for the server (although both will be served by the same instance in this example). For the purposes of this example we will be using:
 
 https://server.example.com
+
 https://client.example.com
 
 
