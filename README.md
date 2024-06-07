@@ -190,7 +190,7 @@ sudo apt install nginx
 
 #### Adjust the firewall settings
 
-Now that we have a web server, we need to update our firewall to allow HTTP and HTTPS connections to out instance.
+Now that we have a web server, we need to update our firewall to allow HTTP and HTTPS connections to our instance.
 
 List the available services:
 
@@ -210,7 +210,7 @@ Available applications:
 
 As you can see we now have new options for our firewall settings with the added Nginx applications.
 
-We are going to go ahead and allow the Nginx Full applications, which will allow HTTP and HTTPS.
+We are going to go ahead and allow the `Nginx Full` applications, which will allow incoming HTTP and HTTPS connections.
 
 ~~~
 sudo ufw allow 'Nginx Full'
@@ -364,7 +364,7 @@ MpfZck0AivhcZhKuzPN3Iofm+D0yumW5g5DTD7EgY2x8SvJR
 
 #### ANON_KEY
 
-The Recogito Studio server is based on [Supabase](https://supabase.com/) platform. They have tools that can generate appropriate and random keys for use with Supabase.
+The Recogito Studio server is based on the [Supabase](https://supabase.com/) platform. They have tools that can generate appropriate and random keys for use with Supabase.
 
 Go to the [Securing your services sections here](https://supabase.com/docs/guides/self-hosting/docker#securing-your-services).
 
@@ -404,7 +404,7 @@ MEqms2zIVGarS6bSql6gm64CECWw0ziz
 
 #### Save your .env file
 
-In the case of nano this is done with a <ctrl>o and then hitting return. <ctrl>x will exit nano.
+In the case of nano this is done with a `<ctrl>o` and then hitting return. `<ctrl>x` will exit nano.
 
 ### Run the installation script
 
@@ -422,10 +422,11 @@ You may need to respond Yes (Y) to the db push.
 
 As stated previously, there are two URLs served from the instance: the client URL and the backend URL.  To complete the Nginx setup you need to activate both routes.
 
-There are two template configuration files included in the recogito-studio repository.
+There are two template configuration files included in the root of the recogito-studio repository.
 
-nginx.client.example.com
-nginx.server.example.com
+`nginx.client.example.com`
+
+`nginx.server.example.com`
 
 The following assumes you are still in the recogito-studio directory and have setup your urls on your DNS server.
 
@@ -446,7 +447,7 @@ sudo nano /etc/nginx/sites-available/client.example.com
 
 ![Edit client configuration](./assets/images/nginx-1.png)
 
-Here simply replace client.example.com with your client url
+Here simply replace client.example.com with your client url. Save and exit nano.
 
 #### Copy the server configuration and update
 
@@ -466,7 +467,7 @@ sudo nano /etc/nginx/sites-available/server.example.com
 
 Here we replace server.example.com for the `server_name` attribute with your correct server URL.
 
-In the Preflighted Requests section, on the line `add_header "Access-Control-Allow-Origin"  https://server.example.com;` replace client.example.com with your correct value for your client URL.
+In the Preflighted Requests section, on the line `add_header "Access-Control-Allow-Origin"  https://client.example.com;` replace client.example.com with your correct value for your client URL.
 
 Finally near the bottom replace the url in `add_header "Access-Control-Allow-Origin"  https://client.example.com always;` with your client URL.
 
@@ -522,7 +523,7 @@ sudo systemctl restart nginx
 
 ### Add Let'ss Encrypt certificates
 
-In order of our HTTPS routes valid, we need domain certificates.  The is easily done with [Let's Encrypt](https://letsencrypt.org/).  We will use a the procedure outlines [here](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-22-04).
+In order for our HTTPS routes to be valid, we need domain certificates.  The is easily done with [Let's Encrypt](https://letsencrypt.org/) free certificates.  We will use the procedure outlined [here](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-22-04).
 
 #### Install Let's Encrypt
 
@@ -550,7 +551,7 @@ Generate and install a certificate for the client routes. As always, change clie
 sudo certbot --nginx -d client.example.com
 ~~~
 
-You will need to provide a email for urgent notices and answer Yes to the terms of service.  You can answer how you like about sharing your email with [EFF](https://www.eff.org/).
+You will need to provide a email for urgent notices and answer `Yes` to the terms of service.  You can answer how you like about sharing your email with [EFF](https://www.eff.org/).
 
 Do the same for the server routes.
 
