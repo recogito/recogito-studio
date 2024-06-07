@@ -521,7 +521,7 @@ And now restart Nginx to make the configuration active:
 sudo systemctl restart nginx
 ~~~
 
-### Add Let'ss Encrypt certificates
+### Add Let's Encrypt certificates
 
 In order for our HTTPS routes to be valid, we need domain certificates.  The is easily done with [Let's Encrypt](https://letsencrypt.org/) free certificates.  We will use the procedure outlined [here](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-22-04).
 
