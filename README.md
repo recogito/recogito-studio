@@ -642,7 +642,9 @@ There are a few more advanced topics not discussed here that will be detailed in
 
 	The self-hosted deployment could be customized to connect to a remote Postgres DB cluster.
 	
+- Install Script Hardening
 	
-
-
+	Currently the install script has not been hardened for error handling nor polished for output formatting.
+	
+ 
  
