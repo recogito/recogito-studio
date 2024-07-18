@@ -6,7 +6,7 @@ server {
         # Preflighted requests
         if ($request_method = OPTIONS ) {
             add_header "Access-Control-Allow-Origin"  https://client.example.com;
-            add_header "Access-Control-Allow-Methods" "GET, POST, OPTIONS, HEAD, PATCH";
+            add_header "Access-Control-Allow-Methods" "GET, POST, OPTIONS, HEAD, PATCH, PUT";
             add_header "Access-Control-Allow-Credentials" true;
             add_header "Access-Control-Allow-Headers" "Authorization, Origin, X-Client-Info, X-Requested-With, Content-Type, Content-Profile, Accept, Apikey, Accept-Profile, Prefer, X-Supabase-Api-Version";
             return 200;
