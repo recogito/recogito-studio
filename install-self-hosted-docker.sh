@@ -2,12 +2,6 @@
 
 echo "Starting Recogito Studio Install"
 
-# Load ENV vars
-
-set -o allexport
-source ./docker/.env
-set +o allexport
-
 # Clone the client
 
 echo "Cloning recogito-client"
@@ -27,6 +21,12 @@ echo "Building Client docker container"
 
 rm .env
 cp ../docker/.env .env
+
+# Load ENV vars
+
+set -o allexport
+source ./.env
+set +o allexport
 
 docker build --no-cache -t recogito-studio-client:latest .
 
@@ -62,7 +62,7 @@ cd ./recogito-server
 
 npm install
 
-SUPABASE_HOST=$SITE_URL && npx supabase db push --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres
+npx supabase db push --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres
 
 sleep 5
 
