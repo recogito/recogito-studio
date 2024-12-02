@@ -408,6 +408,7 @@ services:
   vector:
     container_name: supabase-vector
     image: timberio/vector:0.28.1-alpine
+    restart: unless-stopped
     healthcheck:
       test:
         [
@@ -431,6 +432,7 @@ services:
   cantaloupe:
     container_name: cantaloupe
     image: "uclalibrary/cantaloupe:5.0.5-7"
+    restart: unless-stopped
     ports:
       - "8182:8182"
       - "8183:8183"

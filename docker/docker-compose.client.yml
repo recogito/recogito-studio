@@ -10,6 +10,7 @@ version: "3.8"
 services:
   client:
     image: recogito-studio-client:latest
+    restart: unless-stopped
     container_name: client
     ports:
       - "8090:3000"
