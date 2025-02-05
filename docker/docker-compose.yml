@@ -10,7 +10,7 @@ version: "3.8"
 services:
   studio:
     container_name: supabase-studio
-    image: supabase/studio:20240514-6f5cabd
+    image: supabase/studio:20241106-f29003e
     restart: unless-stopped
     healthcheck:
       test:
@@ -78,7 +78,7 @@ services:
 
   auth:
     container_name: supabase-auth
-    image: supabase/gotrue:v2.151.0
+    image: supabase/gotrue:v2.163.2
     depends_on:
       db:
         # Disable this if you are using an external Postgres database
@@ -173,7 +173,7 @@ services:
   realtime:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
     container_name: realtime-dev.supabase-realtime
-    image: supabase/realtime:v2.28.32
+    image: supabase/realtime:v2.30.34
     depends_on:
       db:
         # Disable this if you are using an external Postgres database
@@ -219,7 +219,7 @@ services:
   # To use S3 backed storage: docker compose -f docker-compose.yml -f docker-compose.s3.yml up
   storage:
     container_name: supabase-storage
-    image: supabase/storage-api:v1.0.6
+    image: supabase/storage-api:v1.13.0
     depends_on:
       db:
         # Disable this if you are using an external Postgres database
@@ -262,7 +262,7 @@ services:
 
   imgproxy:
     container_name: supabase-imgproxy
-    image: darthsim/imgproxy:v3.8.0
+    image: supabase/imgproxy:v3.8.0
     healthcheck:
       test: ["CMD", "imgproxy", "health"]
       timeout: 5s
@@ -278,7 +278,7 @@ services:
 
   meta:
     container_name: supabase-meta
-    image: supabase/postgres-meta:v0.80.0
+    image: supabase/postgres-meta:v0.84.2
     depends_on:
       db:
         # Disable this if you are using an external Postgres database
@@ -296,7 +296,7 @@ services:
 
   functions:
     container_name: supabase-edge-functions
-    image: supabase/edge-runtime:v1.53.3
+    image: supabase/edge-runtime:v1.61.0
     restart: unless-stopped
     depends_on:
       analytics:

@@ -5,6 +5,31 @@
   "created_at": "1685115972558",
   "policies": [
     {
+      "id": "bebfe10f-5316-4ef0-8059-80050515ec5c",
+      "table_name": "join_requests",
+      "operation": "SELECT"
+    },
+    {
+      "id": "9b85eef3-e174-4fbe-81e6-7f1d26adf748",
+      "table_name": "join_requests",
+      "operation": "INSERT"
+    },
+    {
+      "id": "db0d70e3-7477-4926-bfc5-abc738149856",
+      "table_name": "join_requests",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "17733e9d-9135-424d-9b44-621bd66064a3",
+      "table_name": "bodies",
+      "operation": "SELECT"
+    },
+    {
+      "id": "a5cc4271-bde2-4f6e-bd96-97fe790ab5ea",
+      "table_name": "join_requests",
+      "operation": "DELETE"
+    },
+    {
       "id": "a4b82076-cf7d-4f7a-b24d-f12587d71590",
       "table_name": "context_documents",
       "operation": "SELECT"
@@ -123,11 +148,6 @@
       "id": "01c5435d-68ba-442a-a918-d9e0ff53b627",
       "table_name": "annotations",
       "operation": "DELETE"
-    },
-    {
-      "id": "17733e9d-9135-424d-9b44-621bd66064a3",
-      "table_name": "bodies",
-      "operation": "SELECT"
     },
     {
       "id": "3650c340-2263-4df5-ae47-ae12ce32a2a8",
@@ -599,10 +619,6 @@
         "2b94630b-b725-4715-ba72-3388d3c63cbd",
         "0fdb8964-87a1-457b-bbcc-b6f05e44c695",
         "3152390c-1764-4f4d-b6cd-98979c868286",
-        "79cd967d-f268-4bb8-9e84-0eafeac3307f",
-        "d651e790-2dc2-4522-b876-9f27af71c5f6",
-        "0b7820da-aceb-442e-9a5d-3fb3fcaa5254",
-        "b92a5f03-ac77-4f0e-907a-873c9d2f78bf",
         "a4b82076-cf7d-4f7a-b24d-f12587d71590",
         "02e217c8-9409-4223-a118-ae0487ce4fa5",
         "28a43878-359f-4761-9a45-573fc7b593b1",
@@ -610,7 +626,15 @@
         "51eb3610-a7ee-4fd6-9a71-65214aee0dd7",
         "3aa4d2bf-2127-4c66-8858-e9a6b59dbd07",
         "0377daa4-38b3-459d-8715-999532af1cb1",
-        "6a4fec4c-a1c3-4d20-8451-c6ecba886a82"
+        "6a4fec4c-a1c3-4d20-8451-c6ecba886a82",
+        "79cd967d-f268-4bb8-9e84-0eafeac3307f",
+        "d651e790-2dc2-4522-b876-9f27af71c5f6",
+        "0b7820da-aceb-442e-9a5d-3fb3fcaa5254",
+        "b92a5f03-ac77-4f0e-907a-873c9d2f78bf",
+        "bebfe10f-5316-4ef0-8059-80050515ec5c",
+        "9b85eef3-e174-4fbe-81e6-7f1d26adf748",
+        "db0d70e3-7477-4926-bfc5-abc738149856",
+        "a5cc4271-bde2-4f6e-bd96-97fe790ab5ea"
       ]
     },
     {
@@ -624,12 +648,9 @@
         "3eca4407-a589-4301-b705-1deb54a05811",
         "a2cacc27-cd35-4851-a46a-df0d72cd3751",
         "dbeae20d-f490-45f6-9de8-315e5f88b9a6",
+        "7e830a72-19ac-4486-87a7-ca697f430fca",
         "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
-        "1c1bb427-4f2f-40cb-ae03-6799199bbec8",
         "b508e4ca-46bd-478c-9582-fa1c671aa03e",
-        "b716be7a-81b6-4d0a-a55c-a7ca60352ef3",
-        "037bd847-68e1-4e7a-bdce-aa50933dbc00",
-        "10c417f5-603d-4bac-90f4-7365289adbc1",
         "50c00273-d524-4d60-a9af-050d1cff51a3"
       ]
     },
@@ -640,8 +661,8 @@
       "policies": [
         "40c78f89-e227-4bfb-8b7d-5912dd054598",
         "dbeae20d-f490-45f6-9de8-315e5f88b9a6",
-        "7e830a72-19ac-4486-87a7-ca697f430fca",
         "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
+        "7e830a72-19ac-4486-87a7-ca697f430fca",
         "50c00273-d524-4d60-a9af-050d1cff51a3"
       ]
     },
@@ -693,23 +714,24 @@
         "dbeae20d-f490-45f6-9de8-315e5f88b9a6",
         "dd203f6b-bc08-4a8e-b0fc-4a772b2f1d7a",
         "ec8ddded-418c-4078-9d67-31fc0ef17fce",
-        "0e486412-023d-42ff-b44f-04020c5a404d",
         "b716be7a-81b6-4d0a-a55c-a7ca60352ef3",
         "037bd847-68e1-4e7a-bdce-aa50933dbc00",
         "10c417f5-603d-4bac-90f4-7365289adbc1",
         "40c78f89-e227-4bfb-8b7d-5912dd054598",
-        "3eca4407-a589-4301-b705-1deb54a05811",
-        "a2cacc27-cd35-4851-a46a-df0d72cd3751",
-        "79cd967d-f268-4bb8-9e84-0eafeac3307f",
-        "d651e790-2dc2-4522-b876-9f27af71c5f6",
-        "0b7820da-aceb-442e-9a5d-3fb3fcaa5254",
-        "b92a5f03-ac77-4f0e-907a-873c9d2f78bf",
         "a4b82076-cf7d-4f7a-b24d-f12587d71590",
         "02e217c8-9409-4223-a118-ae0487ce4fa5",
         "28a43878-359f-4761-9a45-573fc7b593b1",
         "51eb3610-a7ee-4fd6-9a71-65214aee0dd7",
         "3aa4d2bf-2127-4c66-8858-e9a6b59dbd07",
-        "0377daa4-38b3-459d-8715-999532af1cb1"
+        "0377daa4-38b3-459d-8715-999532af1cb1",
+        "79cd967d-f268-4bb8-9e84-0eafeac3307f",
+        "d651e790-2dc2-4522-b876-9f27af71c5f6",
+        "0b7820da-aceb-442e-9a5d-3fb3fcaa5254",
+        "b92a5f03-ac77-4f0e-907a-873c9d2f78bf",
+        "bebfe10f-5316-4ef0-8059-80050515ec5c",
+        "9b85eef3-e174-4fbe-81e6-7f1d26adf748",
+        "db0d70e3-7477-4926-bfc5-abc738149856",
+        "a5cc4271-bde2-4f6e-bd96-97fe790ab5ea"
       ]
     },
     {
@@ -739,7 +761,11 @@
         "194f2948-2932-4ef4-8047-b5be6311caeb",
         "a7ed0949-baba-442d-a670-ac6d9a254e4a",
         "7e830a72-19ac-4486-87a7-ca697f430fca",
+        "73f9137b-d3b9-49e5-8e3f-f779070ad8f8",
         "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
+        "b508e4ca-46bd-478c-9582-fa1c671aa03e",
+        "fe40a2ef-bcae-441a-935a-eda090d0ac6d",
+        "6ec09042-5dc0-4593-b506-d4c57c3e14cd",
         "a4b82076-cf7d-4f7a-b24d-f12587d71590",
         "02e217c8-9409-4223-a118-ae0487ce4fa5",
         "28a43878-359f-4761-9a45-573fc7b593b1",
@@ -751,7 +777,7 @@
     {
       "id": "8b9d1af6-5713-4894-a3b8-ede3bac13347",
       "name": "Project Student",
-      "description": "Users who can see and interact with projects they are a member of",
+      "description": "User who can see and interact with projects they are a member of",
       "policies": [
         "ca44caef-cdeb-4ca8-bbc7-2421be779934",
         "40c78f89-e227-4bfb-8b7d-5912dd054598",
@@ -769,7 +795,7 @@
     {
       "id": "b3152bcd-dd32-45b2-82e8-e5cfc50f24ac",
       "name": "Layer Student",
-      "description": "Users who can see and interact with layers",
+      "description": "User who can see and interact with layers",
       "policies": [
         "a5f90d2c-51cd-468a-b304-7e5952025a4f",
         "6717fdc0-45df-46f3-b7d3-0d4c4569a33a",
@@ -785,15 +811,35 @@
         "b3bb875a-4e63-41ca-94ec-71fd0f2bad33",
         "45017da5-cb03-4826-ae6f-dafbe1e21339",
         "8ffcf0ea-9b03-419a-ada9-a56e7033d317",
-        "dbeae20d-f490-45f6-9de8-315e5f88b9a6",
         "7e830a72-19ac-4486-87a7-ca697f430fca",
         "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
         "b508e4ca-46bd-478c-9582-fa1c671aa03e",
         "6ec09042-5dc0-4593-b506-d4c57c3e14cd",
-        "b716be7a-81b6-4d0a-a55c-a7ca60352ef3",
         "a4b82076-cf7d-4f7a-b24d-f12587d71590",
         "51eb3610-a7ee-4fd6-9a71-65214aee0dd7",
+        "b716be7a-81b6-4d0a-a55c-a7ca60352ef3",
         "79cd967d-f268-4bb8-9e84-0eafeac3307f"
+      ]
+    },
+    {
+      "id": "5945346a-18a3-4bba-80dd-594c5adeda4c",
+      "name": "Layer Reader",
+      "description": "User who can only read layers",
+      "policies": [
+        "17733e9d-9135-424d-9b44-621bd66064a3",
+        "a4b82076-cf7d-4f7a-b24d-f12587d71590",
+        "51eb3610-a7ee-4fd6-9a71-65214aee0dd7",
+        "79cd967d-f268-4bb8-9e84-0eafeac3307f",
+        "b716be7a-81b6-4d0a-a55c-a7ca60352ef3",
+        "6717fdc0-45df-46f3-b7d3-0d4c4569a33a",
+        "8ffcf0ea-9b03-419a-ada9-a56e7033d317",
+        "40c78f89-e227-4bfb-8b7d-5912dd054598",
+        "0050ab09-124e-40ea-b7ca-723fcc60c3ed",
+        "b3bb875a-4e63-41ca-94ec-71fd0f2bad33",
+        "a5f90d2c-51cd-468a-b304-7e5952025a4f",
+        "7e830a72-19ac-4486-87a7-ca697f430fca",
+        "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
+        "1c1bb427-4f2f-40cb-ae03-6799199bbec8"
       ]
     }
   ],
@@ -817,7 +863,8 @@
       "description": "Default user read policies",
       "role_id": "04b628cf-0d43-427d-ab07-3ff76d266f25",
       "is_admin": false,
-      "is_default": true
+      "is_default": true,
+      "is_read_only": true
     }
   ],
   "project_groups": [
@@ -832,17 +879,18 @@
     {
       "id": "137c1353-41de-4d1a-942c-6168c8568367",
       "name": "Project Students",
-      "description": "Users who are a member of this project",
+      "description": "Users who are a member of a project",
       "role_id": "8b9d1af6-5713-4894-a3b8-ede3bac13347",
       "is_admin": false,
-      "is_default": true
+      "is_default": true,
+      "is_read_only": true
     }
   ],
   "layer_groups": [
     {
       "id": "4f1933e9-6f58-4829-92f7-153a592907b2",
-      "name": "Layer Admin",
-      "description": "User able to manage and update layers",
+      "name": "Layer Admins",
+      "description": "Users able to manage and update layers",
       "role_id": "1c57cc70-3d71-4785-a3eb-4d4f5efa3a5a",
       "is_admin": true,
       "is_default": false
@@ -850,10 +898,19 @@
     {
       "id": "dceadc86-1b03-4ee7-99d8-a9b662479ae6",
       "name": "Layer Student",
-      "description": "Users who are members of this layer can create annotations.",
+      "description": "Users who are members of a layer.",
       "role_id": "b3152bcd-dd32-45b2-82e8-e5cfc50f24ac",
       "is_admin": false,
       "is_default": true
+    },
+    {
+      "id": "247c7b25-1a3a-4d9c-91a1-6738859ef4a3",
+      "name": "Layer Reader",
+      "description": "User who can only read layers",
+      "role_id": "5945346a-18a3-4bba-80dd-594c5adeda4c",
+      "is_admin": false,
+      "is_default": false,
+      "is_read_only": true
     }
   ],
   "admin": {
