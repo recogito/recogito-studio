@@ -849,13 +849,18 @@
       "name": "Org Admins",
       "description": "All Policies",
       "role_id": "18b33e9e-c16e-462d-b683-e0562475e661",
+      "is_default": false,
+      "is_read_only": false,
       "is_admin": true
     },
     {
       "id": "f918b2f8-f587-4ee1-9f2d-35b3aed0b1e6",
       "name": "Org Professor",
       "description": "Project Creators ",
-      "role_id": "12361189-9bbb-4e0b-a50d-58c94639e408"
+      "role_id": "12361189-9bbb-4e0b-a50d-58c94639e408",
+      "is_default": true,
+      "is_read_only": false,
+      "is_admin": false
     },
     {
       "id": "f2e37e37-3b36-4833-b88d-f58e5c018ef5",
@@ -863,7 +868,7 @@
       "description": "Default user read policies",
       "role_id": "04b628cf-0d43-427d-ab07-3ff76d266f25",
       "is_admin": false,
-      "is_default": true,
+      "is_default": false,
       "is_read_only": true
     }
   ],
@@ -874,7 +879,8 @@
       "description": "High level admins for individual projects",
       "role_id": "ff80e3f0-dc27-45b6-8a02-cc543395e752",
       "is_admin": true,
-      "is_default": false
+      "is_default": false,
+      "is_read_only": false
     },
     {
       "id": "137c1353-41de-4d1a-942c-6168c8568367",

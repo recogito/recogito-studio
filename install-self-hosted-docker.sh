@@ -24,9 +24,9 @@ cp ../docker/.env .env
 
 # Load ENV vars
 
-set -o allexport
+<!-- set -o allexport
 source ./.env
-set +o allexport
+set +o allexport -->
 
 docker build --no-cache -t recogito-studio-client:latest .
 
