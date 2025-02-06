@@ -3,3 +3,9 @@ volumes/storage
 .env
 test.http
 docker-compose.override.yml
+node_modules
+package.json
+package-lock.json
+recogito-client
+recogito-server
+

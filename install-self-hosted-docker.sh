@@ -23,10 +23,10 @@ rm .env
 cp ../docker/.env .env
 
 # Load ENV vars
-
-<!-- set -o allexport
 source ./.env
-set +o allexport -->
+
+# Install GeoTagger
+npm run install-plugin recogito/geotagger
 
 docker build --no-cache -t recogito-studio-client:latest .
 
