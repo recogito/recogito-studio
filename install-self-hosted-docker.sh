@@ -76,6 +76,7 @@ cd ..
 
 rm -rf ./recogito-client/
 rm -rf ./recogito-server/
+rm .env
 
 echo "Recogito Studio Installed!"
 
