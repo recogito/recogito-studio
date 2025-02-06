@@ -401,9 +401,6 @@ services:
         "log_min_messages=fatal" # prevents Realtime polling queries from appearing in logs
       ]
     restart: unless-stopped
-    ports:
-      # Pass down internal port because it's set dynamically by other services
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     environment:
       POSTGRES_HOST: /var/run/postgresql
       PGPORT: ${POSTGRES_PORT}
@@ -505,7 +502,7 @@ services:
         "-c",
         "/app/bin/migrate && /app/bin/supavisor eval \"$$(cat /etc/pooler/pooler.exs)\" && /app/bin/server"
       ]
-      
+
   cantaloupe:
     container_name: cantaloupe
     image: "uclalibrary/cantaloupe:5.0.5-7"
