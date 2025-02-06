@@ -62,11 +62,11 @@ cd ./recogito-server
 
 npm install
 
-npx supabase db push --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres
+npx supabase db push --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres --include-all
 
 sleep 5
 
-node ./create-default-groups.js -f ./config.json
+source ./.env && node ./create-default-groups.js -f ./config.json
 
 # Remove the client and server repos
 
