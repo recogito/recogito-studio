@@ -1,2 +1,7 @@
 ./recogito-client
 ./recogito-server
+node_modules
+package.json
+package-lock.json
+recogito-client
+recogito-server
