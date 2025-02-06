@@ -23,7 +23,7 @@ rm .env
 cp ../docker/.env .env
 
 # Load ENV vars
-source ./.env
+set -a && source .env && set +a
 
 # Install GeoTagger
 npm run install-plugin recogito/geotagger
@@ -66,7 +66,7 @@ npx supabase db push --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost
 
 sleep 5
 
-source ./.env && node ./create-default-groups.js -f ./config.json
+node ./create-default-groups.js -f ./config.json
 
 # Remove the client and server repos
 
