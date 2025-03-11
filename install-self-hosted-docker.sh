@@ -6,7 +6,7 @@ echo "Starting Recogito Studio Install"
 
 echo "Cloning recogito-client"
 
-git clone --depth 1 https://github.com/recogito/recogito-client.git
+git clone --single-branch --branch main --depth 1 https://github.com/recogito/recogito-client.git
 
 # Remove the default client config
 rm -f ./recogito-client/src/config.json
@@ -25,12 +25,6 @@ cp ../docker/.env .env
 # Load ENV vars
 set -a && source .env && set +a
 
-# Install GeoTagger
-npm run install-plugin recogito/geotagger
-
-docker build --no-cache -t recogito-studio-client:latest .
-
-
 # Start docker
 
 echo "Starting Supabase"
@@ -46,7 +40,7 @@ cd ..
 
 echo "Cloning recogito-server"
 
-git clone --depth 1 https://github.com/recogito/recogito-server.git
+git clone --single-branch --branch main --depth 1 https://github.com/recogito/recogito-server.git
 
 # Add supabase
 npm i supabase --save-dev
