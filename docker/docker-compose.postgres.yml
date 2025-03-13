@@ -24,7 +24,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"       
+        max-file: "3"  
+    networks:
+      - recogito                  
     environment:
       LOGFLARE_API_KEY: ${LOGFLARE_API_KEY}
     command: ["--config", "etc/vector/vector.yml"]
@@ -54,7 +56,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"       
+        max-file: "3"
+    networks:
+      - recogito                    
     environment:
       POSTGRES_HOST: /var/run/postgresql
       PGPORT: ${POSTGRES_PORT}
@@ -90,7 +94,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"         
+        max-file: "3"   
+    networks:
+      - recogito                   
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_ADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_ADMIN_PASSWORD}

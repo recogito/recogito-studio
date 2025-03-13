@@ -29,7 +29,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"        
+        max-file: "3"
+    networks:
+      - recogito
     environment:
       STUDIO_PG_META_URL: http://meta:8080
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -67,7 +69,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"         
+        max-file: "3"
+    networks:
+      - recogito                 
     environment:
       KONG_DATABASE: "off"
       KONG_DECLARATIVE_CONFIG: /home/kong/kong.yml
@@ -94,7 +98,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"         
+        max-file: "3"
+    networks:
+      - recogito                 
     healthcheck:
       test:
         [
@@ -179,7 +185,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"     
+        max-file: "3"
+    networks:
+      - recogito             
     environment:
       PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
       PGRST_DB_SCHEMAS: ${PGRST_DB_SCHEMAS}
@@ -201,7 +209,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"         
+        max-file: "3"   
+    networks:
+      - recogito              
     healthcheck:
       test:
         [
@@ -249,7 +259,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"         
+        max-file: "3" 
+    networks:
+      - recogito                
     healthcheck:
       test:
         [
@@ -294,7 +306,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"       
+        max-file: "3" 
+    networks:
+      - recogito              
     environment:
       IMGPROXY_BIND: ":5001"
       IMGPROXY_LOCAL_FILESYSTEM_ROOT: /
@@ -314,7 +328,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"     
+        max-file: "3"    
+    networks:
+      - recogito         
     environment:
       PG_META_PORT: 8080
       PG_META_DB_HOST: ${POSTGRES_HOST}
@@ -334,7 +350,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"         
+        max-file: "3"  
+    networks:
+      - recogito               
     environment:
       JWT_SECRET: ${JWT_SECRET}
       SUPABASE_URL: http://kong:8000
@@ -363,7 +381,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"     
+        max-file: "3"  
+    networks:
+      - recogito           
     environment:
       LOGFLARE_NODE_HOST: 127.0.0.1
       DB_USERNAME: supabase_admin
@@ -397,6 +417,13 @@ services:
     depends_on:
       storage:
         condition: service_started
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"          
+    networks:
+      - recogito        
     volumes:
       - ./volumes/cantaloupe/delegate-script.rb:/etc/cantaloupe/delegates.rb
     environment:
