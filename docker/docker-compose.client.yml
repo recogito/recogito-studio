@@ -14,6 +14,11 @@ services:
     container_name: client
     ports:
       - "8090:3000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"       
     environment:
       - PUBLIC_SUPABASE=${PUBLIC_SUPABASE}
       - SUPABASE_SERVERCLIENT_URL=${SUPABASE_SERVERCLIENT_URL}
