@@ -25,6 +25,9 @@ cp ../docker/.env .env
 # Load ENV vars
 set -a && source .env && set +a
 
+# Build 
+docker build --no-cache -t recogito-studio-client:latest .
+
 # Start docker
 
 echo "Starting Supabase"
