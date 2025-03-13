@@ -5,7 +5,6 @@
 #   Destroy:        docker compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml down -v --remove-orphans
 
 name: supabase
-version: "3.8"
 
 services:
   studio:
@@ -387,34 +386,6 @@ services:
       # GOOGLE_PROJECT_NUMBER: ${GOOGLE_PROJECT_NUMBER}
     ports:
       - 4000:4000
-
-  vector:
-    container_name: supabase-vector
-    image: timberio/vector:0.28.1-alpine
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://vector:9001/health",
-        ]
-      timeout: 5s
-      interval: 5s
-      retries: 3
-    volumes:
-      - ./volumes/logs/vector.yml:/etc/vector/vector.yml:ro
-      - ${DOCKER_SOCKET_LOCATION}:/var/run/docker.sock:ro
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"       
-    environment:
-      LOGFLARE_API_KEY: ${LOGFLARE_API_KEY}
-    command: ["--config", "etc/vector/vector.yml"]
 
   cantaloupe:
     container_name: cantaloupe
