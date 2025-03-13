@@ -2,7 +2,7 @@ server {
     server_name portainer.example.com;
 
     location / {
-        proxy_pass http://127.0.0.1:9443;
+        proxy_pass https://127.0.0.1:9443;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
