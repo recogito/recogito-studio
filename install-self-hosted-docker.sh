@@ -30,11 +30,16 @@ docker build --no-cache -t recogito-studio-client:latest .
 
 # Start docker
 
-echo "Starting Supabase"
+echo "Starting Postgres"
 cd ../docker
 
-docker compose -f ./docker-compose.yml pull
+docker network create recogito
 
+docker compose -f ./docker-compose.postgres.yml up -d
+
+sleep 15
+
+echo "Starting Supabase"
 docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d
 
 cd ..
