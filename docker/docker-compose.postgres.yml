@@ -28,7 +28,7 @@ services:
     environment:
       LOGFLARE_API_KEY: ${LOGFLARE_API_KEY}
     command: ["--config", "etc/vector/vector.yml"]
-    
+
   db:
     container_name: supabase-db
     image: supabase/postgres:15.1.1.78
@@ -100,4 +100,8 @@ services:
 volumes:
   local_pgdata:
   pgadmin-data:
-  db-config:        
+  db-config:
+
+networks:
+  recogito:
+    external: true        
