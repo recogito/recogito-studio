@@ -360,13 +360,6 @@ services:
       interval: 5s
       retries: 10
     restart: unless-stopped
-    depends_on:
-    # Uncomment to use Big Query backend for analytics
-    # volumes:
-    #   - type: bind
-    #     source: ${PWD}/gcloud.json
-    #     target: /opt/app/rel/logflare/bin/gcloud.json
-    #     read_only: true
     logging:
       driver: "json-file"
       options:
