@@ -87,19 +87,6 @@ services:
       - ./pgagent-init.sh:/docker-entrypoint-initdb.d/init-scripts/99-pgagent-init.sh:Z
       # Use named volume to persist pgsodium decryption key between restarts
       - db-config:/etc/postgresql-custom
-  pgagent:
-    image: dnaprawa/postgres-pgagent
-    container_name: pgagent_container
-    ports:
-      - "8088:80"
-    environment:
-      PGHOST: supabase-db
-      PGPORT: ${POSTGRES_PORT}
-      PGDATABASE: pgagent_db
-      PGUSER: postgres
-      PGPASSWORD: ${POSTGRES_PASSWORD}
-    depends_on:
-      - db      
 
   pgadmin:
     image: dpage/pgadmin4
