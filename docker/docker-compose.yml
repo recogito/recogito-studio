@@ -257,8 +257,7 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     command: server --console-address ":9001" /data
     healthcheck:
-      # test: ["CMD", "curl", "-f", "http://supabase-minio:9000/minio/health/live"]
-      test: sleep 5 && exit 0
+      test: ["CMD", "curl", "-f", "http://minio:9000/minio/health/live"]
       interval: 2s
       timeout: 10s
       retries: 5
@@ -276,8 +275,8 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     entrypoint: >
       /bin/sh -c "
-      /usr/bin/mc alias set supabase-minio http://supabase-minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
-      /usr/bin/mc mb --ignore-existing supabase-minio/stub;
+      /usr/bin/mc alias set supa-minio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      /usr/bin/mc mb supa-minio/stub;
       exit 0;
       "
 
