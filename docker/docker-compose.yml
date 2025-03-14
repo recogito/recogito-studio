@@ -269,7 +269,7 @@ services:
     container_name: supabase-minio-createbucket
     image: minio/mc
     depends_on:
-      supabase-minio:
+      minio:
         condition: service_healthy
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
