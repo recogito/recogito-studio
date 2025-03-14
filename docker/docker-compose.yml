@@ -289,7 +289,7 @@ services:
         condition: service_started
       imgproxy:
         condition: service_started
-      supabase-minio:
+      minio:
         condition: service_healthy        
     logging:
       driver: "json-file"
