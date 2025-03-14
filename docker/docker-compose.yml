@@ -247,7 +247,6 @@ services:
       SEED_SELF_HOST: true
 
   minio:
-    container_name: supabase-minio
     image: minio/minio
     ports:
       - "9000:9000"
@@ -265,7 +264,6 @@ services:
       - ./volumes/storage:/data:z
 
   minio-createbucket:
-    container_name: supabase-minio-createbucket
     image: minio/mc
     depends_on:
       minio:
