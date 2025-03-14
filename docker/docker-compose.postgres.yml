@@ -81,10 +81,6 @@ services:
       - ./volumes/db/data:/var/lib/postgresql/data:Z
       # Changes required for Analytics support
       - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:Z
-      # Create pgAgent extension
-      - ./create_ext_pgagent.sql:/docker-entrypoint-initdb.d/init-scripts/98-pgagent.sql:Z
-      # Start pgAgent
-      - ./pgagent-init.sh:/docker-entrypoint-initdb.d/init-scripts/99-pgagent-init.sh:Z
       # Use named volume to persist pgsodium decryption key between restarts
       - db-config:/etc/postgresql-custom
 
