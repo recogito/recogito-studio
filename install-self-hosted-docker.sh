@@ -25,7 +25,19 @@ cp ../docker/.env .env
 # Load ENV vars
 set -a && source .env && set +a
 
-# build
+# Install GeoTagger
+# npm run install-plugin recogito/geotagger
+cd ./plugins
+pwd
+git clone https://github.com/recogito/geotagger.git
+cd ./geotagger
+pwd
+git checkout 933b579
+cd ../..
+pwd
+
+#build
+
 docker build --no-cache -t recogito-studio-client:latest .
 
 # Start docker
@@ -43,7 +55,7 @@ cd ..
 
 echo "Cloning recogito-server"
 
-git clone --single-branch --branch main --depth 1 https://github.com/recogito/recogito-server.git
+git clone --depth 1 https://github.com/recogito/recogito-server.git
 
 # Add supabase
 npm i supabase --save-dev
@@ -76,4 +88,3 @@ rm -rf ./recogito-server/
 rm .env
 
 echo "Recogito Studio Installed!"
-
