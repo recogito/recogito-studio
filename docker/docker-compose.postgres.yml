@@ -83,10 +83,23 @@ services:
       - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:Z
       # Use named volume to persist pgsodium decryption key between restarts
       - db-config:/etc/postgresql-custom
+  pgagent:
+    image: dnaprawa/postgres-pgagent
+    container_name: pgagent_container
+    ports:
+      - "8088:80"
+    environment:
+      PGHOST: supabase-db
+      PGPORT: ${POSTGRES_PORT}
+      PGDATABASE: pgagent_db
+      PGUSER: postgres
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - db      
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin4_container
+    container_name: supabase_pgadmin4_container
     restart: always
     ports:
       - "8888:80"
