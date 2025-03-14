@@ -246,15 +246,51 @@ services:
       APP_NAME: realtime
       SEED_SELF_HOST: true
 
-  # To use S3 backed storage: docker compose -f docker-compose.yml -f docker-compose.s3.yml up
+  supabase-minio:
+    container_name: supabase-minio
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server --console-address ":9001" /data
+    healthcheck:
+      # test: ["CMD", "curl", "-f", "http://supabase-minio:9000/minio/health/live"]
+      test: sleep 5 && exit 0
+      interval: 2s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./volumes/storage:/data:z
+
+  minio-createbucket:
+    container_name: supabase-minio-createbucket
+    image: minio/mc
+    depends_on:
+      supabase-minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set supabase-minio http://supabase-minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      /usr/bin/mc mb --ignore-existing supabase-minio/stub;
+      exit 0;
+      "
+
   storage:
     container_name: supabase-storage
-    image: supabase/storage-api:v1.10.1
+    image: supabase/storage-api:v1.11.13
     depends_on:
       rest:
         condition: service_started
       imgproxy:
         condition: service_started
+      supabase-minio:
+        condition: service_healthy        
     logging:
       driver: "json-file"
       options:
@@ -277,18 +313,32 @@ services:
       retries: 3
     restart: unless-stopped
     environment:
+      SEVER_PORT: 5000
+      SERVER_REGION: local
+      MULTI_TENANT: false
+      AUTH_JWT_SECRET: ${JWT_SECRET}
       ANON_KEY: ${ANON_KEY}
       SERVICE_KEY: ${SERVICE_ROLE_KEY}
       POSTGREST_URL: http://rest:3000
       PGRST_JWT_SECRET: ${JWT_SECRET}
       DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-      FILE_SIZE_LIMIT: 52428800
-      STORAGE_BACKEND: file
-      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
-      TENANT_ID: stub
+      DB_INSTALL_ROLES: false
+      STORAGE_BACKEND: s3
+      STORAGE_S3_BUCKET: stub
+      STORAGE_S3_ENDPOINT: http://supabase-minio:9000
+      STORAGE_S3_FORCE_PATH_STYLE: true
+      STORAGE_S3_REGION: us-west-2
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+      TENANT_ID: stub      
+      FILE_SIZE_LIMIT: 3221225472
+      UPLOAD_FILE_SIZE_LIMIT_STANDARD: 3221225472 # 3GB
+      UPLOAD_SIGNED_URL_EXPIRATION_TIME: 120
+      TUS_URL_PATH: /upload/resumable
+      TUS_MAX_SIZE: 3600000
+      IMGPROXY_REQUEST_TIMEOUT: 15
+      DATABASE_SEARCH_PATH: storage           
       # TODO: https://github.com/supabase/storage-api/issues/55
-      REGION: stub
-      GLOBAL_S3_BUCKET: stub
       ENABLE_IMAGE_TRANSFORMATION: "true"
       IMGPROXY_URL: http://imgproxy:5001
     volumes:
