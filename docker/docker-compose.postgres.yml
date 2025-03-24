@@ -24,9 +24,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"  
+        max-file: "3"
     networks:
-      - recogito                  
+      - recogito
     environment:
       LOGFLARE_API_KEY: ${LOGFLARE_API_KEY}
     command: ["--config", "etc/vector/vector.yml"]
@@ -58,7 +58,7 @@ services:
         max-size: "10m"
         max-file: "3"
     networks:
-      - recogito                    
+      - recogito
     environment:
       POSTGRES_HOST: /var/run/postgresql
       PGPORT: ${POSTGRES_PORT}
@@ -79,8 +79,6 @@ services:
       - ./volumes/db/jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:Z
       # PGDATA directory is persisted between restarts
       - ./volumes/db/data:/var/lib/postgresql/data:Z
-      # Changes required for Analytics support
-      - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:Z
       # Use named volume to persist pgsodium decryption key between restarts
       - db-config:/etc/postgresql-custom
 
@@ -94,9 +92,9 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"   
+        max-file: "3"
     networks:
-      - recogito                   
+      - recogito
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_ADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_ADMIN_PASSWORD}
@@ -110,4 +108,4 @@ volumes:
 
 networks:
   recogito:
-    external: true        
+    external: true
