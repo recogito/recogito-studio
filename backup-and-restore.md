@@ -98,7 +98,7 @@ psql postgres \
 
 ![](./assets/images/studio-sql-editor.png)
 
-Run the following SQL commands:
+Run the following SQL commands, they can be pasted into the editor all at once. :
 
 ```sql
 DROP POLICY IF EXISTS "Users with correct policies can SELECT on objects" ON storage.objects;
@@ -121,9 +121,7 @@ DROP POLICY IF EXISTS "Users with correct policies can DELETE on objects" ON sto
 
 CREATE POLICY "Users with correct policies can DELETE on objects" ON storage.objects FOR DELETE TO authenticated
     USING (TRUE);
-```
 
-```sql
 DROP POLICY IF EXISTS "Users with correct policies can SELECT on buckets" ON storage.buckets;
 
 CREATE POLICY "Users with correct policies can SELECT on buckets" ON storage.buckets FOR SELECT TO authenticated
