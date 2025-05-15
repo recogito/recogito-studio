@@ -52,7 +52,7 @@ cd ..
 
 echo "Cloning recogito-server"
 
-git clone --single-branch --branch main --depth 1 https://github.com/recogito/recogito-server.git
+git clone --depth 1 https://github.com/recogito/recogito-server.git
 
 # Add supabase
 npm i supabase --save-dev
@@ -85,4 +85,3 @@ rm -rf ./recogito-server/
 rm .env
 
 echo "Recogito Studio Installed!"
-
