@@ -4,13 +4,56 @@ Recogito-Studio is ready for self-hosting and these instructions detail the step
 
 In the example below we will install Recogito Studio on a [Digital Ocean Droplet](https://docs.digitalocean.com/products/droplets/). Digital Ocean is a well-regarded cloud hosting platform known for its ease of use and competitive pricing, but the instructions are easily translated to other cloud platforms or on-premises data centers.
 
+## System Diagram
+
+![System Diagram](./assets/images/system-diagram.png)
+
+### Components
+
+#### RS Supabase
+
+These are most of the [Supabase](supabase.com) processes, plus the addition on [MinIO](https://min.io/) to handle object storage, and [Cantaloupe](https://cantaloupe-project.github.io/) as a IIIF server.
+
+#### RS Client
+
+This is the client application of Recogito Studio, written in [Astro JS](https://astro.build/). 
+
+#### Postgres
+
+This is a Postgres server, along with a [Supabase Vector](https://supabase.com/features/vector-database) process, and [pgAdmin](https://www.pgadmin.org/), a Postgres tools and management application.
+
+#### Portainer
+
+[Portainer](https://www.portainer.io/) is a container management tool which eases many aspects of managing and monitoring a docker environment.
+
+#### Trigger.dev (optional)
+
+[Trigger.dev](https://trigger.dev/) is a background job system. Currently only the optional [plugin-ner](https://github.com/recogito/plugin-ner) plugin uses Trigger, but future features and plugins may use it as well. Installation instructions for `plugin-ner`, including installing Trigger, are maintained in [this](https://github.com/recogito/plugin-ner) repository.
+
+#### Stanford CoreNLP (optional)
+
+The [Stanford CoreNLP](https://stanfordnlp.github.io/CoreNLP/) is a Natural Language Processor. Currently only the optional [plugin-ner](https://github.com/recogito/plugin-ner) plugin uses this process.
+
+### Domains
+
+
 These instructions assume that you have an available domain, with access to create new DNS records.
 
-Recogito Studio requires two domains. One for the client and one for the server (although both will be served by the same instance in this example). Since we are hosting Recogito Studio from the same instance, these domains should both point at the public IP address of the instance. For the purposes of this example we will be using:
+A full setup of a basic Recogito Studio requires five DNS records. One for the client and one for the server (although both will be served by the same instance in this example). Portainer, pgAdmin, and Min.io also need urls to access them outside of the instance. Since we are hosting Recogito Studio from the same instance, these DNS records should both point at the public IP address of the instance. For the purposes of this example we will be using:
 
-https://server.example.com
+- https://server.example.com
 
-https://client.example.com
+- https://client.example.com
+
+- https://portainer.example.com
+
+- https://pgadmin.example.com
+
+- https://minio.example.com
+
+Additionally to run the optional processes for the `plugin-ner` plugin will require access to the Trigger.dev dashboard:
+
+- https://trigger.example.com
 
 ## Digital Ocean Example
 
@@ -369,7 +412,7 @@ Go to the [Securing your services sections here](https://supabase.com/docs/guide
 
 Enter your JWT_SECRET secret you generated above and choose ANON_KEY as the Preconfigured Payload and press the Generate JWT button. Copy the value and replace it in your .env file.
 
-#### SERVICE_ROLE_KEY
+#### SERVICE\_ROLE_KEY
 
 On the same page as above, choose SERVICE_KEY as the Preconfigured Payload (with the same JWT Secret) and press the Generate JWT button. Copy the value and replace it in your .env file.
 
@@ -381,7 +424,7 @@ Supabase has a client application that allows management of the Supabase platfor
 
 Change this to the domain you have configured for the server URL. Here we will be using https://server.example.com
 
-#### ORG_ADMIN_PW
+#### ORG\_ADMIN_PW
 
 An Org admin is a Recogito Studio Superuser. An initial Org Admin is created for your installation with an email address of admin@example.com. Create an appropriate and secure password for this account. Again we recommend one at least 12 characters long. It can contain special characters.
 
@@ -398,6 +441,22 @@ Sample output:
 ```
 MEqms2zIVGarS6bSql6gm64CECWw0ziz
 ```
+
+#### MINIO\_ROOT_USER
+
+This would be the login username for the Min.io dashboard.
+
+#### MINIO\_ROOT_PASSWORD
+
+This would be the password for the `MINIO_ROOT_USER`  above.
+
+#### PGADMIN\_ADMIN_EMAIL
+
+Username for logging into pgAdmin web app.
+
+#### PGADMIN\_ADMIN_PASSWORD
+
+Password for the above `PGADMIN_ADMIN_EMAIL`.
 
 #### Save your .env file
 
@@ -417,13 +476,19 @@ You may need to respond Yes (Y) to the db push.
 
 ### Complete Nginx Setup
 
-As stated previously, there are two URLs served from the instance: the client URL and the backend URL. To complete the Nginx setup you need to activate both routes.
+As stated previously, there are five URLs served from the instance: the client and server URLs, as well as the . To complete the Nginx setup you need to at least activate the client and server routes.
 
-There are two template configuration files included in the root of the recogito-studio repository.
+There are five template configuration files included in the root of the recogito-studio repository.
 
 `nginx.client.example.com`
 
 `nginx.server.example.com`
+
+`nginx.minio.example.com`
+
+`nginx.pgadmin.example.com`
+
+`nginx.portainer.example.com`
 
 The following assumes you are still in the recogito-studio directory and have setup your urls on your DNS server.
 
@@ -469,6 +534,26 @@ In the Preflighted Requests section, on the line `add_header "Access-Control-All
 
 Finally near the bottom replace the url in `add_header "Access-Control-Allow-Origin"  https://client.example.com always;` with your client URL.
 
+#### Copy the support configurations and update
+
+The process for `nginx.minio.example.com`, `nginx.pgadmin.example.com`, `nginx.portainer.example.com` are all the same. Copy the template to `/etc/nginx/sites-available` directory, replacing `example.com` with your domain. 
+
+For example, with pgAdmin:
+
+~~~
+sudo cp ./nginx.pgadmin.example.com /etc/nginx/sites-available/pgadmin.[your domain].com
+~~~
+
+And edit
+
+```
+sudo nano /etc/nginx/sites-available/pgadmin.[your domain].com
+```
+
+For all three files replace `server_name` and the url in `add_header "Access-Control-Allow-Origin"` with your domain name:
+
+![Support NGINX](./assets/images/support-nginx.png)
+
 #### Update nginx.conf
 
 We need to make a small modification to the default Nginx configuration.
@@ -496,6 +581,12 @@ Nginx has two directories, sites-available and sites-enabled. You enable a site 
 sudo ln -s /etc/nginx/sites-available/server.example.com /etc/nginx/sites-enabled/
 
 sudo ln -s /etc/nginx/sites-available/client.example.com /etc/nginx/sites-enabled/
+
+sudo ln -s /etc/nginx/sites-available/pgadmin.example.com /etc/nginx/sites-enabled/
+
+sudo ln -s /etc/nginx/sites-available/minio.example.com /etc/nginx/sites-enabled/
+
+sudo ln -s /etc/nginx/sites-available/portainer.example.com /etc/nginx/sites-enabled/
 ```
 
 #### Restart Nginx with the new configurations
@@ -551,10 +642,16 @@ sudo certbot --nginx -d client.example.com
 
 You will need to provide a email for urgent notices and answer `Yes` to the terms of service. You can answer how you like about sharing your email with [EFF](https://www.eff.org/).
 
-Do the same for the server routes.
+Do the same for the other routes.
 
 ```
 sudo certbot --nginx -d server.example.com
+
+sudo certbot --nginx -d pgadmin.example.com
+
+sudo certbot --nginx -d minio.example.com
+
+sudo certbot --nginx -d portainer.example.com
 ```
 
 #### Confirm auto-renewal
@@ -618,6 +715,12 @@ Go ahead and sign in with the initial Org Admin which has a username of `admin@e
 Using your browser navigate to your server URL. The username will be `supabase` and the password you set in the .env file for `DASHBOARD_PASSWORD`.
 
 The Supabase studio client gives you access to the DB and allows for User creation. Detailed usage can be seen [here](https://supabase.com/docs).
+
+### Other resources
+
+If you are interested in adding plugins, check out the [Recogito Studio SDK](https://github.com/recogito/recogito-studio-sdk). [This section](https://github.com/recogito/recogito-studio-sdk) details adding plugins to your installation.
+
+As stated before, use of the `plugin-ner` plugin requires additional resources. Check out [the repository](https://github.com/recogito/plugin-ner) for more information.
 
 ## What's next, what's missing?
 

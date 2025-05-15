@@ -25,29 +25,26 @@ cp ../docker/.env .env
 # Load ENV vars
 set -a && source .env && set +a
 
-# Install GeoTagger
-# npm run install-plugin recogito/geotagger
-cd ./plugins
-pwd
-git clone https://github.com/recogito/geotagger.git
-cd ./geotagger
-pwd
-git checkout 933b579
-cd ../..
-pwd
-
-#build
-
+# Build 
 docker build --no-cache -t recogito-studio-client:latest .
 
 # Start docker
 
-echo "Starting Supabase"
+echo "Starting Postgres"
 cd ../docker
 
-docker compose -f ./docker-compose.yml pull
+docker network create recogito
 
+docker compose -f ./docker-compose.postgres.yml up -d
+
+sleep 15
+
+echo "Starting Supabase"
 docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d
+
+# Start Portainer
+echo "Starting Portainer"
+docker compose -f ./docker-compose.portainer.yml up -d
 
 cd ..
 
