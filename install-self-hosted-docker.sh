@@ -42,6 +42,10 @@ sleep 15
 echo "Starting Supabase"
 docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d
 
+# Start Portainer
+echo "Starting Portainer"
+docker compose -f ./docker-compose.portainer.yml up -d
+
 cd ..
 
 # Clone the server src
