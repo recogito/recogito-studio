@@ -1,7 +1,7 @@
 {
   "project_name": "Recogito Config",
   "author": "LWJ",
-  "version": "1.21",
+  "version": "1.23",
   "created_at": "1685115972558",
   "policies": [
     {
@@ -523,6 +523,26 @@
       "id": "9a7fb2a1-9ccb-4071-8ec9-b90fcf1eb546",
       "table_name": "targets",
       "operation": "DELETE"
+    },
+    {
+      "id": "a6107b81-5f87-4092-908f-f917f546663b",
+      "table_name": "notifications",
+      "operation": "SELECT"
+    },
+    {
+      "id": "74bac033-6485-4851-af27-563421464c89",
+      "table_name": "notifications",
+      "operation": "INSERT"
+    },
+    {
+      "id": "cf269ac0-0228-4930-a4df-1737363abadf",
+      "table_name": "notifications",
+      "operation": "UPDATE"
+    },
+    {
+      "id": "0d2be6e9-5f8d-4891-b66c-91dd835778d0",
+      "table_name": "notifications",
+      "operation": "DELETE"
     }
   ],
   "roles": [
@@ -634,7 +654,11 @@
         "bebfe10f-5316-4ef0-8059-80050515ec5c",
         "9b85eef3-e174-4fbe-81e6-7f1d26adf748",
         "db0d70e3-7477-4926-bfc5-abc738149856",
-        "a5cc4271-bde2-4f6e-bd96-97fe790ab5ea"
+        "a5cc4271-bde2-4f6e-bd96-97fe790ab5ea",
+        "a6107b81-5f87-4092-908f-f917f546663b",
+        "74bac033-6485-4851-af27-563421464c89",
+        "cf269ac0-0228-4930-a4df-1737363abadf",
+        "0d2be6e9-5f8d-4891-b66c-91dd835778d0"
       ]
     },
     {
@@ -651,7 +675,8 @@
         "7e830a72-19ac-4486-87a7-ca697f430fca",
         "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
         "b508e4ca-46bd-478c-9582-fa1c671aa03e",
-        "50c00273-d524-4d60-a9af-050d1cff51a3"
+        "50c00273-d524-4d60-a9af-050d1cff51a3",
+        "a6107b81-5f87-4092-908f-f917f546663b"
       ]
     },
     {
@@ -663,7 +688,8 @@
         "dbeae20d-f490-45f6-9de8-315e5f88b9a6",
         "2cb6d98c-14d8-44bd-a977-1ca1116fc44f",
         "7e830a72-19ac-4486-87a7-ca697f430fca",
-        "50c00273-d524-4d60-a9af-050d1cff51a3"
+        "50c00273-d524-4d60-a9af-050d1cff51a3",
+        "a6107b81-5f87-4092-908f-f917f546663b"
       ]
     },
     {
@@ -849,18 +875,18 @@
       "name": "Org Admins",
       "description": "All Policies",
       "role_id": "18b33e9e-c16e-462d-b683-e0562475e661",
+      "is_admin": true,
       "is_default": false,
-      "is_read_only": false,
-      "is_admin": true
+      "is_read_only": false
     },
     {
       "id": "f918b2f8-f587-4ee1-9f2d-35b3aed0b1e6",
       "name": "Org Professor",
       "description": "Project Creators ",
       "role_id": "12361189-9bbb-4e0b-a50d-58c94639e408",
+      "is_admin": false,
       "is_default": true,
-      "is_read_only": false,
-      "is_admin": false
+      "is_read_only": false
     },
     {
       "id": "f2e37e37-3b36-4833-b88d-f58e5c018ef5",
@@ -879,8 +905,7 @@
       "description": "High level admins for individual projects",
       "role_id": "ff80e3f0-dc27-45b6-8a02-cc543395e752",
       "is_admin": true,
-      "is_default": false,
-      "is_read_only": false
+      "is_default": false
     },
     {
       "id": "137c1353-41de-4d1a-942c-6168c8568367",
