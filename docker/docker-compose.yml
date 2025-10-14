@@ -9,7 +9,7 @@ name: supabase
 services:
   studio:
     container_name: supabase-studio
-    image: supabase/studio:20240923-2e3e90c
+    image: supabase/studio:2025.10.01-sha-8460121
     restart: unless-stopped
     healthcheck:
       test:
@@ -43,6 +43,7 @@ services:
       AUTH_JWT_SECRET: ${JWT_SECRET}
 
       NEXT_PUBLIC_ENABLE_LOGS: true
+      NEXT_ANALYTICS_BACKEND_PROVIDER: postgres
 
   kong:
     container_name: supabase-kong
@@ -78,7 +79,7 @@ services:
 
   auth:
     container_name: supabase-auth
-    image: supabase/gotrue:v2.158.1
+    image: supabase/gotrue:v2.180.0
     logging:
       driver: "json-file"
       options:
@@ -161,7 +162,7 @@ services:
 
   rest:
     container_name: supabase-rest
-    image: postgrest/postgrest:v12.0.1
+    image: postgrest/postgrest:v13.0.7
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -183,7 +184,7 @@ services:
   realtime:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
     container_name: realtime-dev.supabase-realtime
-    image: supabase/realtime:v2.30.34
+    image: supabase/realtime:v2.51.11
     logging:
       driver: "json-file"
       options:
@@ -224,6 +225,7 @@ services:
       RLIMIT_NOFILE: "10000"
       APP_NAME: realtime
       SEED_SELF_HOST: true
+      RUN_JANITOR: true
 
   minio:
     image: minio/minio
@@ -263,7 +265,7 @@ services:
 
   storage:
     container_name: supabase-storage
-    image: supabase/storage-api:v1.19.3
+    image: supabase/storage-api:v1.28.0
     depends_on:
       rest:
         condition: service_started
@@ -338,7 +340,7 @@ services:
 
   meta:
     container_name: supabase-meta
-    image: supabase/postgres-meta:v0.83.2
+    image: supabase/postgres-meta:v0.91.6
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -354,10 +356,11 @@ services:
       PG_META_DB_NAME: ${POSTGRES_DB}
       PG_META_DB_USER: supabase_admin
       PG_META_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      CRYPTO_KEY: ${PG_META_CRYPTO_KEY}
 
   functions:
     container_name: supabase-edge-functions
-    image: supabase/edge-runtime:v1.58.3
+    image: supabase/edge-runtime:v1.69.6
     restart: unless-stopped
     logging:
       driver: "json-file"

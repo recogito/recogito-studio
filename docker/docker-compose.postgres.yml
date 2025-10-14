@@ -29,11 +29,12 @@ services:
       - recogito
     environment:
       LOGFLARE_API_KEY: ${LOGFLARE_API_KEY}
+      LOGFLARE_PUBLIC_ACCESS_TOKEN: ${LOGFLARE_PUBLIC_ACCESS_TOKEN}
     command: ["--config", "etc/vector/vector.yml"]
 
   db:
     container_name: supabase-db
-    image: supabase/postgres:15.1.1.78
+    image: supabase/postgres:15.8.1.085
     healthcheck:
       test: pg_isready -U postgres -h localhost
       interval: 5s
@@ -80,7 +81,7 @@ services:
       # PGDATA directory is persisted between restarts
       - ./volumes/db/data:/var/lib/postgresql/data:Z
       # Use named volume to persist pgsodium decryption key between restarts
-      - db-config:/etc/postgresql-custom
+      # - db-config:/etc/postgresql-custom
 
   pgadmin:
     image: dpage/pgadmin4

@@ -1,5 +1,5 @@
 {
-  "project_name": "Recogito Config",
+  "project_name": "Staging Config",
   "author": "LWJ",
   "version": "1.23",
   "created_at": "1685115972558",
@@ -945,24 +945,25 @@
     }
   ],
   "admin": {
-    "admin_email": "admin@example.com",
+    "admin_email": "admin@performantsoftware.com",
     "admin_groups": [
       "350abe76-937b-4a9b-9600-9b1f856db250"
     ]
   },
   "branding": {
     "platform_name": "Recogito Studio",
-    "site_name": "Recogito",
-    "welcome_blurb": "Welcome to Recogito Studio",
+    "site_name": "Self Hosting Test",
+    "welcome_blurb": "Testing server for Recogito Self Hosting",
     "site_color": "orange",
     "home_banner": "https://iiif-staging.archivengine.com/iiif/3/1ylyaluscm668rynn5a7d6mwsqe6;1/full/max/0/default.jpg",
     "background_color": "black",
-    "footer_message": "Powered by Recogito Studio",
-    "top_logos_enabled": true,
+    "footer_message": "Powered by Recogito",
     "bottom_logos_enabled": true,
     "contrast_color": "white",
-    "favicon": "favicon.png",
-    "alt_favicon": true
+    "favicon": "favicon.svg",
+    "alt_favicon": true,
+    "top_logo": "recogito-studio-logo.svg",
+    "login_logo": ""
   },
   "authentication": {
     "methods": [
