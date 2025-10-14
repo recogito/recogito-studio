@@ -81,7 +81,7 @@ services:
       # PGDATA directory is persisted between restarts
       - ./volumes/db/data:/var/lib/postgresql/data:Z
       # Use named volume to persist pgsodium decryption key between restarts
-      - db-config:/etc/postgresql-custom
+      # - db-config:/etc/postgresql-custom
 
   pgadmin:
     image: dpage/pgadmin4
