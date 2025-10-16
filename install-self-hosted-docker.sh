@@ -30,7 +30,7 @@ docker build --no-cache -t recogito-studio-client:latest .
 
 # Start docker
 
-echo "Starting Postgres"
+echo "Starting Postgres, wait 30 seconds before starting other containers"
 cd ../docker
 
 docker network create recogito
