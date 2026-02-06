@@ -945,7 +945,7 @@
     }
   ],
   "admin": {
-    "admin_email": "admin@performantsoftware.com",
+    "admin_email": "admin@example.com",
     "admin_groups": [
       "350abe76-937b-4a9b-9600-9b1f856db250"
     ]
