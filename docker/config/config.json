@@ -543,6 +543,26 @@
       "id": "0d2be6e9-5f8d-4891-b66c-91dd835778d0",
       "table_name": "notifications",
       "operation": "DELETE"
+    },
+    {
+      "id": "fa94486c-91bb-40ee-88d9-d776433c1ee6",
+      "table_name": "jobs",
+      "operation": "DELETE"
+    },
+    {
+      "id": "a2c24be1-b8d6-41b1-82d2-643f38c65c69",
+      "table_name": "jobs",
+      "operation": "INSERT"
+    },
+    {
+      "id": "e3beb021-5231-4c53-a68b-d9075c870687",
+      "table_name": "jobs",
+      "operation": "SELECT"
+    },
+    {
+      "id": "30466051-b7c9-4262-963a-8992ed37afd0",
+      "table_name": "jobs",
+      "operation": "UPDATE"
     }
   ],
   "roles": [
@@ -658,7 +678,11 @@
         "a6107b81-5f87-4092-908f-f917f546663b",
         "74bac033-6485-4851-af27-563421464c89",
         "cf269ac0-0228-4930-a4df-1737363abadf",
-        "0d2be6e9-5f8d-4891-b66c-91dd835778d0"
+        "0d2be6e9-5f8d-4891-b66c-91dd835778d0",
+        "fa94486c-91bb-40ee-88d9-d776433c1ee6",
+        "a2c24be1-b8d6-41b1-82d2-643f38c65c69",
+        "e3beb021-5231-4c53-a68b-d9075c870687",
+        "30466051-b7c9-4262-963a-8992ed37afd0"
       ]
     },
     {
@@ -875,18 +899,13 @@
       "name": "Org Admins",
       "description": "All Policies",
       "role_id": "18b33e9e-c16e-462d-b683-e0562475e661",
-      "is_admin": true,
-      "is_default": false,
-      "is_read_only": false
+      "is_admin": true
     },
     {
       "id": "f918b2f8-f587-4ee1-9f2d-35b3aed0b1e6",
       "name": "Org Professor",
       "description": "Project Creators ",
-      "role_id": "12361189-9bbb-4e0b-a50d-58c94639e408",
-      "is_admin": false,
-      "is_default": true,
-      "is_read_only": false
+      "role_id": "12361189-9bbb-4e0b-a50d-58c94639e408"
     },
     {
       "id": "f2e37e37-3b36-4833-b88d-f58e5c018ef5",
@@ -894,7 +913,7 @@
       "description": "Default user read policies",
       "role_id": "04b628cf-0d43-427d-ab07-3ff76d266f25",
       "is_admin": false,
-      "is_default": false,
+      "is_default": true,
       "is_read_only": true
     }
   ],
