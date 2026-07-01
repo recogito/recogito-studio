@@ -4,6 +4,10 @@
 
 [Documentation](https://recogitostudio.org/guides/self-hosting/)
 
+## Trigger.dev (project import/export)
+
+Project import/export runs as background jobs on [Trigger.dev](https://trigger.dev/), so a Trigger.dev project is required for those features (the rest of the app works without it). You can use managed Trigger.dev Cloud or [self-host your own instance](https://trigger.dev/docs/self-hosting/overview). See [Set Up Trigger.dev](https://recogitostudio.org/guides/self-hosting/#set-up-triggerdev) for the setup and task-deploy steps. If you self-host, pin your instance to a version compatible with the client's `@trigger.dev/sdk` (currently `4.4.x`).
+
 ## Upgrade Recogito Studio
 
 ### Manual upgrade
