@@ -227,40 +227,39 @@ services:
       SEED_SELF_HOST: true
       RUN_JANITOR: true
 
-  minio:
-    image: minio/minio
+  rustfs:
+    image: rustfs/rustfs:1.0.1
+    restart: unless-stopped
     ports:
       - "9000:9000"
       - "9001:9001"
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    command: server --console-address ":9001" /data
+      RUSTFS_ACCESS_KEY: ${MINIO_ROOT_USER}
+      RUSTFS_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
+    security_opt:
+      - "no-new-privileges:true"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://minio:9000/minio/health/live"]
+      test: ["CMD", "curl", "-f", "http://rustfs:9000/health"]
       interval: 2s
       timeout: 10s
       retries: 5
     networks:
       - recogito
     volumes:
-      - ./volumes/storage:/data:z
+      - rustfs-data:/data
 
-  minio-createbucket:
-    image: minio/mc
+  rustfs-createbucket:
+    image: rustfs/rc
     depends_on:
-      minio:
+      rustfs:
         condition: service_healthy
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     networks:
       - recogito
     entrypoint: >
-      /bin/sh -c "
-      /usr/bin/mc alias set supa-minio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
-      /usr/bin/mc mb supa-minio/stub;
-      exit 0;
+      /bin/sh -ec "
+      rc alias set supa-rustfs http://rustfs:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD} &&
+      rc mb --ignore-existing supa-rustfs/stub
       "
 
   storage:
@@ -271,8 +270,10 @@ services:
         condition: service_started
       imgproxy:
         condition: service_started
-      minio:
+      rustfs:
         condition: service_healthy
+      rustfs-createbucket:
+        condition: service_completed_successfully
     logging:
       driver: "json-file"
       options:
@@ -303,7 +304,7 @@ services:
       FILE_SIZE_LIMIT: 3221225472
       STORAGE_BACKEND: s3
       STORAGE_S3_BUCKET: stub
-      STORAGE_S3_ENDPOINT: http://minio:9000
+      STORAGE_S3_ENDPOINT: http://rustfs:9000
       STORAGE_S3_FORCE_PATH_STYLE: true
       AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
       AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
@@ -415,3 +416,6 @@ services:
 networks:
   recogito:
     external: true
+
+volumes:
+  rustfs-data:
