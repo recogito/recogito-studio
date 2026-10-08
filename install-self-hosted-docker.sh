@@ -1,11 +1,15 @@
 #!/bin/bash
 
+set -eo pipefail
+trap 'echo "Install FAILED at line $LINENO: $BASH_COMMAND" >&2' ERR
+
 echo "Starting Recogito Studio Install"
 
 # Clone the client
 
 echo "Cloning recogito-client"
 
+rm -rf ./recogito-client
 git clone --single-branch --branch main --depth 1 https://github.com/recogito/recogito-client.git
 
 # Remove the default client config
@@ -19,7 +23,7 @@ cd ./recogito-client
 
 echo "Building Client docker container"
 
-rm .env
+rm -f .env
 cp ../docker/.env .env
 
 # Load ENV vars
@@ -33,7 +37,7 @@ docker build --no-cache -t recogito-studio-client:latest .
 echo "Starting Postgres, wait 30 seconds before starting other containers"
 cd ../docker
 
-docker network create recogito
+docker network inspect recogito >/dev/null 2>&1 || docker network create recogito
 
 docker compose -f ./docker-compose.postgres.yml up -d
 
@@ -52,6 +56,7 @@ cd ..
 
 echo "Cloning recogito-server"
 
+rm -rf ./recogito-server
 git clone --single-branch --branch main --depth 1 https://github.com/recogito/recogito-server.git
 
 # Remove the default server config
@@ -79,6 +84,5 @@ cd ..
 
 rm -rf ./recogito-client/
 rm -rf ./recogito-server/
-rm .env
 
 echo "Recogito Studio Installed!"
