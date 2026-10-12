@@ -239,8 +239,6 @@ services:
       RUSTFS_ACCESS_KEY: ${MINIO_ROOT_USER}
       RUSTFS_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
       RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
-    security_opt:
-      - "no-new-privileges:true"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://rustfs:9000/health"]
       interval: 2s
