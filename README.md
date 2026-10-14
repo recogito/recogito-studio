@@ -8,6 +8,10 @@
 
 Project import/export runs as background jobs on [Trigger.dev](https://trigger.dev/), so a Trigger.dev project is required for those features (the rest of the app works without it). You can use managed Trigger.dev Cloud or [self-host your own instance](https://trigger.dev/docs/self-hosting/overview). See [Set Up Trigger.dev](https://recogitostudio.org/guides/self-hosting/#set-up-triggerdev) for the setup and task-deploy steps. If you self-host, pin your instance to a version compatible with the client's `@trigger.dev/sdk` (see [`package.json`](https://github.com/recogito/recogito-client/blob/main/package.json)).
 
+## SAML Single Sign-On (optional)
+
+Users can sign in through a SAML 2.0 identity provider. SAML is off by default. See [Set Up SAML Single Sign-On](https://recogitostudio.org/guides/self-hosting/#set-up-saml-single-sign-on) for the `.env` settings, the URLs to give your identity provider, and how to register it with `add-saml-provider.sh`.
+
 ## Upgrade Recogito Studio
 
 ### Manual upgrade
@@ -27,6 +31,11 @@ git pull
 Before upgrading, compare your live `.env` file against the latest `.env.example` to ensure you aren't missing any newly required variables.
 ```sh
 cat ./docker/.env.example
+```
+
+If you customize your config in `./docker/config/config.local.json`, check for upstream changes to `config.json` that you should merge into it.
+```sh
+diff ./docker/config/config.json ./docker/config/config.local.json
 ```
 
 Before you can run the script for the first time, you will need to grant it execution permissions.
