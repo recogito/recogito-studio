@@ -11,13 +11,6 @@ if [ ! -f "./docker/.env" ]; then
     exit 1
 fi
 
-# Use the operator's untracked config.local.json when present, otherwise the default config.json
-CONFIG_FILE=./docker/config/config.json
-if [ -f ./docker/config/config.local.json ]; then
-    CONFIG_FILE=./docker/config/config.local.json
-fi
-echo "Using config file $CONFIG_FILE"
-
 # --- Client upgrade
 
 echo "Cloning latest recogito-client..."
@@ -25,7 +18,7 @@ git clone --single-branch --branch main --depth 1 https://github.com/recogito/re
 
 echo "Applying updated config.json to client..."
 rm -f ./recogito-client/src/config.json
-cp "$CONFIG_FILE" ./recogito-client/src/config.json
+cp ./docker/config/config.json ./recogito-client/src/config.json
 
 cd ./recogito-client
 
@@ -48,7 +41,7 @@ git clone --single-branch --branch main --depth 1 https://github.com/recogito/re
 
 echo "Applying updated config.json to server..."
 rm -f ./recogito-server/config.json
-cp "$CONFIG_FILE" ./recogito-server/config.json
+cp ./docker/config/config.json ./recogito-server/config.json
 
 cd ./recogito-server
 

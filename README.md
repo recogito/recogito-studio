@@ -33,11 +33,6 @@ Before upgrading, compare your live `.env` file against the latest `.env.example
 cat ./docker/.env.example
 ```
 
-If you customize your config in `./docker/config/config.local.json`, check for upstream changes to `config.json` that you should merge into it.
-```sh
-diff ./docker/config/config.json ./docker/config/config.local.json
-```
-
 Before you can run the script for the first time, you will need to grant it execution permissions.
 ```sh
 chmod +x upgrade.sh
