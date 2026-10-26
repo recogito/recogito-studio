@@ -37,7 +37,7 @@ cp ../docker/.env .env
 set -a && source .env && set +a
 
 # Rebuild the docker image
-docker build --no-cache -t recogito-studio-client:latest .
+docker build --pull --no-cache -t recogito-studio-client:latest .
 cd ..
 
 
