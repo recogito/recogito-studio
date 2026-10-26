@@ -34,7 +34,7 @@ services:
 
   db:
     container_name: supabase-db
-    image: supabase/postgres:15.8.1.085
+    image: supabase/postgres:15.19.0.007
     healthcheck:
       test: pg_isready -U postgres -h localhost
       interval: 5s
@@ -84,7 +84,7 @@ services:
       # - db-config:/etc/postgresql-custom
 
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:9.18.0
     container_name: supabase_pgadmin4_container
     restart: always
     ports:

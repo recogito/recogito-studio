@@ -9,7 +9,7 @@ name: supabase
 services:
   studio:
     container_name: supabase-studio
-    image: supabase/studio:2025.10.01-sha-8460121
+    image: supabase/studio:2026.10.26-sha-478bd88
     restart: unless-stopped
     healthcheck:
       test:
@@ -49,7 +49,7 @@ services:
 
   kong:
     container_name: supabase-kong
-    image: kong:2.8.1
+    image: kong:2.8.5
     restart: unless-stopped
     # https://unix.stackexchange.com/a/294837
     entrypoint: bash -c 'eval "echo \"$$(cat ~/temp.yml)\"" > ~/kong.yml && /docker-entrypoint.sh kong docker-start'
@@ -81,7 +81,7 @@ services:
 
   auth:
     container_name: supabase-auth
-    image: supabase/gotrue:v2.180.0
+    image: supabase/gotrue:v2.197.0
     logging:
       driver: "json-file"
       options:
@@ -164,7 +164,7 @@ services:
 
   rest:
     container_name: supabase-rest
-    image: postgrest/postgrest:v13.0.7
+    image: postgrest/postgrest:v14.18
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -186,7 +186,7 @@ services:
   realtime:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
     container_name: realtime-dev.supabase-realtime
-    image: supabase/realtime:v2.51.11
+    image: supabase/realtime:v2.148.1
     logging:
       driver: "json-file"
       options:
@@ -230,7 +230,7 @@ services:
       RUN_JANITOR: true
 
   rustfs:
-    image: rustfs/rustfs:1.0.1
+    image: rustfs/rustfs:1.0.4
     restart: unless-stopped
     ports:
       - "9010:9000"
@@ -250,7 +250,7 @@ services:
       - rustfs-data:/data
 
   rustfs-createbucket:
-    image: rustfs/rc
+    image: rustfs/rc:v0.1.36
     depends_on:
       rustfs:
         condition: service_healthy
@@ -264,7 +264,7 @@ services:
 
   storage:
     container_name: supabase-storage
-    image: supabase/storage-api:v1.28.0
+    image: supabase/storage-api:v1.84.25
     depends_on:
       rest:
         condition: service_started
@@ -320,7 +320,7 @@ services:
 
   imgproxy:
     container_name: supabase-imgproxy
-    image: darthsim/imgproxy:v3.8.0
+    image: darthsim/imgproxy:v3.31.4
     healthcheck:
       test: ["CMD", "imgproxy", "health"]
       timeout: 5s
@@ -341,7 +341,7 @@ services:
 
   meta:
     container_name: supabase-meta
-    image: supabase/postgres-meta:v0.91.6
+    image: supabase/postgres-meta:v0.100.0
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -361,7 +361,7 @@ services:
 
   functions:
     container_name: supabase-edge-functions
-    image: supabase/edge-runtime:v1.69.6
+    image: supabase/edge-runtime:v1.77.8
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -387,7 +387,7 @@ services:
 
   cantaloupe:
     container_name: cantaloupe
-    image: "uclalibrary/cantaloupe:5.0.5-7"
+    image: "uclalibrary/cantaloupe:5.0.7-2"
     restart: unless-stopped
     ports:
       - "8182:8182"

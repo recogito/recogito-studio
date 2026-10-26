@@ -10,7 +10,7 @@ services:
       - 8082:8082
   mail:
     container_name: supabase-mail
-    image: inbucket/inbucket:3.0.3
+    image: inbucket/inbucket:3.2.0
     ports:
       - '2500:2500' # SMTP
       - '9000:9000' # web interface

@@ -1,0 +1,24 @@
+version: 2
+updates:
+  - package-ecosystem: "docker-compose"
+    directories:
+      - "/docker"
+      - "/docker/dev"
+    schedule:
+      interval: "monthly"
+    groups:
+      # Update Supabase images together since they come as a set
+      supabase:
+        patterns:
+          - "supabase/*"
+          - "postgrest/postgrest"
+          - "kong"
+          - "darthsim/imgproxy"
+          - "timberio/vector"
+    ignore:
+      - dependency-name: "recogito-studio-client"
+      # Postgres major versions need to be upgraded by hand with pg_upgrade
+      - dependency-name: "supabase/postgres"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "kong"
+        update-types: ["version-update:semver-major"]
