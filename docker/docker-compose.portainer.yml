@@ -2,7 +2,7 @@ name: portainer
 
 services:
   portainer:
-    image: portainer/portainer-ce:latest
+    image: portainer/portainer-ce:2.45.3
     ports:
       - 9443:9443
     volumes:
