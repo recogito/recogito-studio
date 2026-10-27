@@ -164,7 +164,7 @@ services:
 
   rest:
     container_name: supabase-rest
-    image: postgrest/postgrest:v14.18
+    image: postgrest/postgrest:v16.5
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -320,7 +320,7 @@ services:
 
   imgproxy:
     container_name: supabase-imgproxy
-    image: darthsim/imgproxy:v3.31.4
+    image: darthsim/imgproxy:v4.0.19
     healthcheck:
       test: ["CMD", "imgproxy", "health"]
       timeout: 5s
