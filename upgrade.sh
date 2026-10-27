@@ -41,6 +41,14 @@ set -a && source .env && set +a
 docker build --pull --no-cache -t recogito-studio-client:latest .
 cd ..
 
+echo "Updating containers to the image versions in the compose files..."
+cd ./docker
+
+docker compose -f ./docker-compose.postgres.yml up -d --wait --wait-timeout 300
+COMPOSE_IGNORE_ORPHANS=true docker compose -f ./docker-compose.yml up -d --wait --wait-timeout 300
+docker compose -f ./docker-compose.portainer.yml up -d --wait --wait-timeout 300
+cd ..
+
 
 # --- Server upgrade
 
@@ -68,16 +76,9 @@ cd ..
 
 # --- Final steps
 
-echo "Updating containers to the image versions in the compose files..."
+echo "Restarting the client container to apply the new image..."
 cd ./docker
 
-# Compose pulls any newly pinned image tags and recreates only the containers whose config changed.
-# --wait fails the upgrade if a container doesn't become running/healthy within the timeout.
-docker compose -f ./docker-compose.postgres.yml up -d --wait --wait-timeout 300
-docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d --wait --wait-timeout 300
-docker compose -f ./docker-compose.portainer.yml up -d --wait --wait-timeout 300
-
-echo "Restarting the client container to apply the new image..."
 # The client image tag never changes, so force a recreate to pick up the new build
 docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d --wait --wait-timeout 300 --force-recreate client
 cd ..
