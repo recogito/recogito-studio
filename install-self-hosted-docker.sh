@@ -41,21 +41,20 @@ docker build --pull --no-cache -t recogito-studio-client:latest .
 
 # Start docker
 
-echo "Starting Postgres, wait 30 seconds before starting other containers"
+echo "Starting Postgres and waiting for it to be healthy"
 cd ../docker
 
 docker network inspect recogito >/dev/null 2>&1 || docker network create recogito
 
-docker compose -f ./docker-compose.postgres.yml up -d
-
-sleep 15
+# --wait fails the install if a container doesn't become running/healthy within the timeout
+docker compose -f ./docker-compose.postgres.yml up -d --wait --wait-timeout 300
 
 echo "Starting Supabase"
-docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d
+docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d --wait --wait-timeout 300
 
 # Start Portainer
 echo "Starting Portainer"
-docker compose -f ./docker-compose.portainer.yml up -d
+docker compose -f ./docker-compose.portainer.yml up -d --wait --wait-timeout 300
 
 cd ..
 
