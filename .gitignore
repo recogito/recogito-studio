@@ -7,3 +7,4 @@ recogito-client
 recogito-server
 .env
 install-self-hosted-docker-pelagios.sh
+backups

@@ -34,7 +34,11 @@ supabase db dump --db-url [CONNECTION_STRING] -f history_schema.sql --schema sup
 supabase db dump --db-url [CONNECTION_STRING] -f history_data.sql --use-copy --data-only --schema supabase_migrations
 ```
 
+`upgrade.sh` runs these commands before each upgrade and saves the files to `./backups/pre-upgrade-<timestamp>/`.
+
 ## Restore Database
+
+> If you are rolling back a failed upgrade, start by checking out the previous version of this repo (e.g. `git checkout <previous-commit> -- docker/`).
 
 Before restoring a database, an empty 'postgres' database needs to be initialized by Supabase. If you are running with the default docker configuration, these are the steps to take before restoring the files.
 

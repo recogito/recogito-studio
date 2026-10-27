@@ -2,6 +2,7 @@
 
 # Exit immediately if a command exits with a non-zero status
 set -e
+trap 'echo "Upgrade FAILED at line $LINENO: $BASH_COMMAND. Check container status with \"docker ps -a\" and \"docker logs <container>\"." >&2' ERR
 
 echo "Starting Recogito Studio Upgrade..."
 
@@ -40,9 +41,9 @@ set -a && source .env && set +a
 docker build --pull --no-cache -t recogito-studio-client:latest .
 cd ..
 
+# --- Server setup
 
-# --- Server upgrade
-
+# Installed before the backup so the dump uses the server's pinned Supabase CLI
 echo "Cloning latest recogito-server..."
 git clone --single-branch --branch main --depth 1 https://github.com/recogito/recogito-server.git
 
@@ -54,6 +55,52 @@ cd ./recogito-server
 
 echo "Installing server dependencies..."
 npm install
+
+cd ..
+
+
+# --- Database backup
+
+# Dump the database before anything changes using the same commands as backup-and-restore.md.
+# Set SKIP_DB_BACKUP=true to skip this step, e.g. if you snapshot the whole server before upgrading.
+if [ "$SKIP_DB_BACKUP" = "true" ]; then
+    echo "Skipping database backup (SKIP_DB_BACKUP=true)"
+else
+    BACKUP_DIR="$PWD/backups/pre-upgrade-$(date +%Y%m%d-%H%M%S)"
+    echo "Backing up database to $BACKUP_DIR..."
+    mkdir -p "$BACKUP_DIR"
+
+    cd ./recogito-server
+    DB_URL=postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres
+    PGSSLMODE=disable npx supabase db dump --db-url "$DB_URL" -f "$BACKUP_DIR/roles.sql" --role-only
+    PGSSLMODE=disable npx supabase db dump --db-url "$DB_URL" -f "$BACKUP_DIR/schema.sql"
+    PGSSLMODE=disable npx supabase db dump --db-url "$DB_URL" -f "$BACKUP_DIR/data.sql" --use-copy --data-only
+    PGSSLMODE=disable npx supabase db dump --db-url "$DB_URL" -f "$BACKUP_DIR/history_schema.sql" --schema supabase_migrations
+    PGSSLMODE=disable npx supabase db dump --db-url "$DB_URL" -f "$BACKUP_DIR/history_data.sql" --use-copy --data-only --schema supabase_migrations
+    cd ..
+
+    # Keep only the 5 most recent pre-upgrade backups
+    ls -1d ./backups/pre-upgrade-* | sort -r | tail -n +6 | while read -r OLD_BACKUP; do
+        echo "Removing old backup $OLD_BACKUP"
+        rm -rf "$OLD_BACKUP"
+    done
+fi
+
+
+# --- Stack upgrade
+
+echo "Updating containers to the image versions in the compose files..."
+cd ./docker
+
+docker compose -f ./docker-compose.postgres.yml up -d --wait --wait-timeout 300
+COMPOSE_IGNORE_ORPHANS=true docker compose -f ./docker-compose.yml up -d --wait --wait-timeout 300
+docker compose -f ./docker-compose.portainer.yml up -d --wait --wait-timeout 300
+cd ..
+
+
+# --- Server upgrade
+
+cd ./recogito-server
 
 echo "Applying database migrations..."
 # Push any database schema changes to Postgres
@@ -70,8 +117,8 @@ cd ..
 echo "Restarting the client container to apply the new image..."
 cd ./docker
 
-# Docker compose up with the new client container image
-docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d --force-recreate client
+# The client image tag never changes, so force a recreate to pick up the new build
+docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d --wait --wait-timeout 300 --force-recreate client
 cd ..
 
 echo "Cleaning up temporary repositories..."

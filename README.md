@@ -45,3 +45,8 @@ Finally, execute the script.
 ```
 
 > Note: The upgrade process builds a new Docker image from scratch and pushes schema changes to your database. Depending on your server's resources, this process usually takes a few minutes to complete.
+
+Before changing any containers, the upgrade script backs up the database to `./backups/pre-upgrade-<timestamp>/`. The five most recent backups are kept. To restore a backup, follow [Backup and Restore DB](./backup-and-restore.md). If you already back up the whole server before upgrading, you can tell `upgrade.sh` to skip the backup:
+```sh
+SKIP_DB_BACKUP=true ./upgrade.sh
+```
