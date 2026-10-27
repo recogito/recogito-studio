@@ -67,10 +67,16 @@ cd ..
 
 # --- Final steps
 
-echo "Restarting the client container to apply the new image..."
+echo "Updating containers to the image versions in the compose files..."
 cd ./docker
 
-# Docker compose up with the new client container image
+# Compose pulls any newly pinned image tags and recreates only the containers whose config changed
+docker compose -f ./docker-compose.postgres.yml up -d
+docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d
+docker compose -f ./docker-compose.portainer.yml up -d
+
+echo "Restarting the client container to apply the new image..."
+# The client image tag never changes, so force a recreate to pick up the new build
 docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d --force-recreate client
 cd ..
 
