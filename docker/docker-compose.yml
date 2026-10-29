@@ -49,7 +49,7 @@ services:
 
   api-gw:
     container_name: supabase-envoy
-    image: envoyproxy/envoy:v1.39.1
+    image: envoyproxy/envoy:v1.40.1
     restart: unless-stopped
     healthcheck:
       # Using a TCP port check because this image does not include curl or wget.
@@ -171,7 +171,7 @@ services:
 
   rest:
     container_name: supabase-rest
-    image: postgrest/postgrest:v14.18
+    image: postgrest/postgrest:v16.5
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -328,7 +328,7 @@ services:
 
   imgproxy:
     container_name: supabase-imgproxy
-    image: darthsim/imgproxy:v3.31.4
+    image: darthsim/imgproxy:v4.0.20
     healthcheck:
       test: ["CMD", "imgproxy", "health"]
       timeout: 5s
