@@ -113,8 +113,7 @@ class CustomDelegate
     bearer_token = extract_bearer_token(context['request_headers'])
 
     # Attempt to access the resource using the provided token
-    uri = URI(@url_prefix)
-    uri.path += "/#{context['identifier']}" if context['identifier']
+    uri = URI("#{@url_prefix}#{context['identifier']}")
 
     puts "URI host: #{uri.host}, port: #{uri.port}"
 
