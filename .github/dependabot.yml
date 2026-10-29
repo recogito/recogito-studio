@@ -12,13 +12,11 @@ updates:
         patterns:
           - "supabase/*"
           - "postgrest/postgrest"
-          - "kong"
+          - "envoyproxy/envoy"
           - "darthsim/imgproxy"
           - "timberio/vector"
     ignore:
       - dependency-name: "recogito-studio-client"
       # Postgres major versions need to be upgraded by hand with pg_upgrade
       - dependency-name: "supabase/postgres"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "kong"
         update-types: ["version-update:semver-major"]
