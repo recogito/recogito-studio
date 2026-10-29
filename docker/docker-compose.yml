@@ -395,7 +395,7 @@ services:
 
   cantaloupe:
     container_name: cantaloupe
-    image: "uclalibrary/cantaloupe:5.0.7-2"
+    image: "uclalibrary/cantaloupe:5.0.5-7"
     restart: unless-stopped
     ports:
       - "8182:8182"
