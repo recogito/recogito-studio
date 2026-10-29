@@ -30,18 +30,20 @@ transforms:
     inputs:
       - project_logs
     route:
-      kong: '.appname == "supabase-kong"'
+      # Envoy application logs start with "[timestamp]"
+      gateway_access: '.appname == "supabase-envoy" && !starts_with(string(.event_message) ?? "", "[")'
+      gateway_app: '.appname == "supabase-envoy" && starts_with(string(.event_message) ?? "", "[")'
       auth: '.appname == "supabase-auth"'
       rest: '.appname == "supabase-rest"'
       realtime: '.appname == "supabase-realtime"'
       storage: '.appname == "supabase-storage"'
       functions: '.appname == "supabase-edge-functions"'
       db: '.appname == "supabase-db"'
-  # Ignores non nginx errors since they are related with kong booting up
-  kong_logs:
+  # Envoy's access log format mirrors nginx combined, so it parses the same way
+  gateway_logs:
     type: remap
     inputs:
-      - router.kong
+      - router.gateway_access
     source: |-
       req, err = parse_nginx_log(.event_message, "combined")
       if err == null {
@@ -57,30 +59,21 @@ transforms:
       if err != null {
         abort
       }
-  # Ignores non nginx errors since they are related with kong booting up
-  kong_err:
+  # Envoy application logs: [time][thread][level][logger] [file:line] message
+  gateway_err:
     type: remap
     inputs:
-      - router.kong
+      - router.gateway_app
     source: |-
       .metadata.request.method = "GET"
       .metadata.response.status_code = 200
-      parsed, err = parse_nginx_log(.event_message, "error")
-      if err == null {
-          .timestamp = parsed.timestamp
-          .severity = parsed.severity
-          .metadata.request.host = parsed.host
-          .metadata.request.headers.cf_connecting_ip = parsed.client
-          url, err = split(parsed.request, " ")
-          if err == null {
-              .metadata.request.method = url[0]
-              .metadata.request.path = url[1]
-              .metadata.request.protocol = url[2]
-          }
-      }
+      parsed, err = parse_regex(.event_message, r'^\[[^\]]+\]\[\d+\]\[(?P<level>\w+)\]\[(?P<logger>[^\]]+)\] (?P<msg>.*)$')
       if err != null {
         abort
       }
+      .event_message = parsed.msg
+      .severity = parsed.level
+      .metadata.logger = parsed.logger
   # Gotrue logs are structured json strings which frontend parses directly. But we keep metadata for consistency.
   auth_logs:
     type: remap
@@ -210,10 +203,7 @@ sinks:
       retry_max_duration_secs: 10
       headers:
         x-api-key: ${LOGFLARE_PUBLIC_ACCESS_TOKEN?LOGFLARE_PUBLIC_ACCESS_TOKEN is required}
-    # We must route the sink through kong because ingesting logs before logflare is fully initialised will
-    # lead to broken queries from studio. This works by the assumption that containers are started in the
-    # following order: vector > db > logflare > kong
-    uri: 'http://kong:8000/analytics/v1/api/logs?source_name=postgres.logs'
+    uri: 'http://analytics:4000/api/logs?source_name=postgres.logs'
   logflare_functions:
     type: 'http'
     inputs:
@@ -238,11 +228,11 @@ sinks:
       headers:
         x-api-key: ${LOGFLARE_PUBLIC_ACCESS_TOKEN?LOGFLARE_PUBLIC_ACCESS_TOKEN is required}
     uri: 'http://analytics:4000/api/logs?source_name=storage.logs.prod.2'
-  logflare_kong:
+  logflare_gateway:
     type: 'http'
     inputs:
-      - kong_logs
-      - kong_err
+      - gateway_logs
+      - gateway_err
     encoding:
       codec: 'json'
     method: 'post'

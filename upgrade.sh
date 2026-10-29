@@ -92,6 +92,15 @@ fi
 echo "Updating containers to the image versions in the compose files..."
 cd ./docker
 
+# Remove Kong if it exists from an old version
+docker rm -f supabase-kong 2>/dev/null || true
+
+# Envoy only listens on HTTP; TLS is expected to terminate at the reverse proxy (see nginx.server.example.com)
+if grep -q '^KONG_HTTPS_PORT=' .env; then
+    echo "Warning: KONG_HTTPS_PORT is set in docker/.env, but the API gateway no longer serves HTTPS."
+    echo "         Point your reverse proxy at port ${API_GW_HTTP_PORT:-${KONG_HTTP_PORT:-8000}} (HTTP) instead of ${KONG_HTTPS_PORT}."
+fi
+
 docker compose -f ./docker-compose.postgres.yml up -d --wait --wait-timeout 300
 COMPOSE_IGNORE_ORPHANS=true docker compose -f ./docker-compose.yml up -d --wait --wait-timeout 300
 docker compose -f ./docker-compose.portainer.yml up -d --wait --wait-timeout 300
