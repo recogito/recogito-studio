@@ -3,7 +3,7 @@ name: postgres
 services:
   vector:
     container_name: supabase-vector
-    image: timberio/vector:0.28.1-alpine
+    image: timberio/vector:0.60.0-alpine
     healthcheck:
       test:
         [
