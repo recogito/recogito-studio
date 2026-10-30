@@ -34,7 +34,7 @@ services:
 
   db:
     container_name: supabase-db
-    image: supabase/postgres:15.19.0.007
+    image: supabase/postgres:17.6.1.136
     healthcheck:
       test: pg_isready -U postgres -h localhost
       interval: 5s
@@ -81,7 +81,7 @@ services:
       # PGDATA directory is persisted between restarts
       - ./volumes/db/data:/var/lib/postgresql/data:Z
       # Use named volume to persist pgsodium decryption key between restarts
-      # - db-config:/etc/postgresql-custom
+      - db-config:/etc/postgresql-custom
 
   pgadmin:
     image: dpage/pgadmin4:9.18.0

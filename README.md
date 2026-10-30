@@ -50,3 +50,16 @@ Before changing any containers, the upgrade script backs up the database to `./b
 ```sh
 SKIP_DB_BACKUP=true ./upgrade.sh
 ```
+
+### Postgres upgrades
+
+Recogito Studio now runs on Postgres 17. `upgrade.sh` will search for a Postgres 15 database. If it finds one, it will automatically run `./docker/utils/upgrade-pg17.sh` to upgrade it in place with `pg_upgrade` before starting the new containers. That script is adapted from [Supabase's upstream migration script](https://supabase.com/docs/guides/self-hosting/postgres-upgrade-17).
+
+When upgrading Postgres, there are a couple extra requirements to the upgrade script:
+
+- root access via `sudo`
+- free disk space of at least twice the size of `./docker/volumes/db/data` + 5 GB
+
+Data from the old version of Postgres will be stored in `./docker/volumes/db/data.bak.pg<version>` until you manually delete it.
+
+Recogito Studio will follow Supabase's lead in upgrading to Postgres 19 sometime in the future.
