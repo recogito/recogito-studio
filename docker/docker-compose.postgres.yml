@@ -3,7 +3,7 @@ name: postgres
 services:
   vector:
     container_name: supabase-vector
-    image: timberio/vector:0.28.1-alpine
+    image: timberio/vector:0.60.0-alpine
     healthcheck:
       test:
         [
@@ -34,7 +34,7 @@ services:
 
   db:
     container_name: supabase-db
-    image: supabase/postgres:15.19.0.007
+    image: supabase/postgres:15.19.0.011
     healthcheck:
       test: pg_isready -U postgres -h localhost
       interval: 5s
