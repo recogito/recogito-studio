@@ -22,6 +22,9 @@
 #   - Rollback uses docker-compose.pg15.yml as an override on top of
 #     docker-compose.postgres.yml.
 #   - Only Postgres is restarted at the end; upgrade.sh starts the rest.
+#   - pg_upgrade runs in a pinned Postgres 15 image rather than the installed
+#     one. Recogito's current Postgres 15 image is Alpine-based, but initiate.sh
+#     needs Ubuntu and the upgrade binaries need a matching glibc.
 #
 # Usage (must be run as root or with sudo):
 #   cd docker/
@@ -39,11 +42,13 @@
 #   DO NOT DELETE it until you have verified the upgrade was successful.
 #
 # Rollback (if the upgrade fails or you want to revert):
-#   1. docker compose -f docker-compose.postgres.yml down
-#   2. rm -rf ./volumes/db/data
-#   3. mv ./volumes/db/data.bak.pg15 ./volumes/db/data
-#   4. docker compose -f docker-compose.postgres.yml -f docker-compose.pg15.yml run --rm --no-deps db chown -R postgres:postgres /etc/postgresql-custom/
-#   5. docker compose -f docker-compose.postgres.yml -f docker-compose.pg15.yml up -d
+#   1. COMPOSE_IGNORE_ORPHANS=true docker compose -f docker-compose.yml -f docker-compose.client.yml down
+#   2. docker compose -f docker-compose.postgres.yml down
+#   3. rm -rf ./volumes/db/data
+#   4. mv ./volumes/db/data.bak.pg15 ./volumes/db/data
+#   5. docker compose -f docker-compose.postgres.yml -f docker-compose.pg15.yml run --rm --no-deps db chown -R postgres:postgres /etc/postgresql-custom/ /var/lib/postgresql/data
+#   6. docker compose -f docker-compose.postgres.yml -f docker-compose.pg15.yml up -d --wait
+#   7. COMPOSE_IGNORE_ORPHANS=true docker compose -f docker-compose.yml -f docker-compose.client.yml up -d
 #
 
 # Ensure we're running under bash (not sh/zsh/dash).
@@ -65,11 +70,15 @@ done
 # --- Configuration ----------------------------------------------------------
 
 # Image used for the upgrade tarball + complete.sh container.
-# Must share glibc with PG 15 (the extracted ELF binaries run inside PG15).
+# Must share glibc with PG15_UPGRADE_IMAGE (the extracted ELF binaries run inside it).
 # Pinned to .063: later images bumped glibc, which breaks the ELF extraction.
 PG17_UPGRADE_IMAGE="supabase/postgres:17.6.1.063"
 # Tag in supabase/postgres repo matching the upgrade image (for downloading scripts)
 PG17_SCRIPTS_REF="17.6.1.063"
+# Image that runs pg_upgrade (initiate.sh). Built from the same commit as
+# PG17_UPGRADE_IMAGE. Do not bump this separately: later Postgres 15 images are
+# Alpine-based, and initiate.sh depends on Ubuntu tools and locale paths.
+PG15_UPGRADE_IMAGE="supabase/postgres:15.14.1.063"
 
 # Compose file that defines the db service
 PG_COMPOSE="docker-compose.postgres.yml"
@@ -105,6 +114,23 @@ pg_password=""
 current_image=""
 drop_extensions=""
 db_config_vol=""
+# True while the data directory and db-config belong to an upgrade image's
+# postgres user instead of the installed Postgres 15 image's
+pg15_ownership_changed=false
+
+# Give the data directory and db-config back to the installed Postgres 15 image,
+# whose postgres UID can differ from the upgrade images', so it can start again.
+restore_pg15_ownership() {
+    warn "Restoring data directory and db-config ownership for $current_image"
+    docker run --rm --user root --entrypoint chown -v "${db_config_vol}:/vol" "$current_image" \
+        -R postgres:postgres /vol/ \
+        || warn "Could not restore ownership of the '$db_config_vol' volume."
+    if [ -d "$DATA_DIR" ]; then
+        docker run --rm --user root --entrypoint chown -v "$(cd "$DATA_DIR" && pwd):/pgdata" "$current_image" \
+            -R postgres:postgres /pgdata \
+            || warn "Could not restore ownership of $DATA_DIR."
+    fi
+}
 
 # Remove leftover containers and staging dir on exit.
 # Uses an alpine container for rm because the tarball build runs as root
@@ -113,6 +139,9 @@ db_config_vol=""
 cleanup() {
     docker rm -f "$UPGRADE_CONTAINER" >/dev/null 2>&1 || true
     docker rm -f "$COMPLETE_CONTAINER" >/dev/null 2>&1 || true
+    if [ "$pg15_ownership_changed" = true ]; then
+        restore_pg15_ownership
+    fi
     if [ -n "$staging_dir" ] && [ -d "$staging_dir" ]; then
         docker run --rm -v "$staging_dir:/cleanup" alpine rm -rf /cleanup 2>/dev/null || true
         rm -rf "$staging_dir" 2>/dev/null || true
@@ -123,11 +152,6 @@ trap cleanup EXIT
 on_interrupt() {
     echo ""
     warn "Interrupted. Cleaning up..."
-    # If db-config was chowned to PG17, restore for PG 15 rollback
-    if [ -n "$db_config_vol" ] && [ -n "$current_image" ]; then
-        docker run --rm -v "${db_config_vol}:/vol" "$current_image" \
-            chown -R postgres:postgres /vol/ 2>/dev/null || true
-    fi
     die "Interrupted."
 }
 trap on_interrupt INT
@@ -205,11 +229,13 @@ preflight() {
         warn "Backup directory already exists: $BACKUP_DIR"
         warn "This is likely from a previous upgrade attempt."
         warn "If you haven't verified that previous upgrade, roll back first:"
-        warn "  1. docker compose -f $PG_COMPOSE down"
-        warn "  2. rm -rf $DATA_DIR"
-        warn "  3. mv $BACKUP_DIR $DATA_DIR"
-        warn "  4. docker compose -f $PG_COMPOSE -f $PG15_COMPOSE run --rm --no-deps db chown -R postgres:postgres /etc/postgresql-custom/"
-        warn "  5. docker compose -f $PG_COMPOSE -f $PG15_COMPOSE up -d"
+        warn "  1. COMPOSE_IGNORE_ORPHANS=true docker compose -f docker-compose.yml -f docker-compose.client.yml down"
+        warn "  2. docker compose -f $PG_COMPOSE down"
+        warn "  3. rm -rf $DATA_DIR"
+        warn "  4. mv $BACKUP_DIR $DATA_DIR"
+        warn "  5. docker compose -f $PG_COMPOSE -f $PG15_COMPOSE run --rm --no-deps db chown -R postgres:postgres /etc/postgresql-custom/ /var/lib/postgresql/data"
+        warn "  6. docker compose -f $PG_COMPOSE -f $PG15_COMPOSE up -d --wait"
+        warn "  7. COMPOSE_IGNORE_ORPHANS=true docker compose -f docker-compose.yml -f docker-compose.client.yml up -d"
         echo ""
         warn "Continuing will DELETE the existing backup permanently."
         confirm "Delete $BACKUP_DIR and start a fresh upgrade?"
@@ -255,8 +281,9 @@ preflight() {
         drop_extensions="$incompatible"
     fi
 
-    # pg_upgrade refuses to run while replication slots exist. Realtime
-    # recreates its own slot on startup, so these are usually safe to drop.
+    # pg_upgrade only migrates logical replication slots from Postgres 17 or
+    # later, so slots on this cluster are lost. Realtime recreates its own on
+    # startup, but anything custom has to be recreated by hand.
     local slots
     slots=$(run_sql_on "$DB_CONTAINER" -A -t -c "
         SELECT string_agg(slot_name, ', ') FROM pg_replication_slots;
@@ -264,9 +291,8 @@ preflight() {
 
     if [ -n "$slots" ]; then
         warn "Replication slots found: $slots"
-        warn "pg_upgrade may fail while these exist. If it does, drop them with:"
-        warn "  docker exec $DB_CONTAINER psql -U supabase_admin -d postgres -c \"SELECT pg_drop_replication_slot(slot_name) FROM pg_replication_slots;\""
-        warn "and re-run this script. Recreate any custom slots after the upgrade."
+        warn "These will not carry over to Postgres 17. Realtime recreates its own slots,"
+        warn "but you must recreate any custom slots after the upgrade."
     fi
 
     echo ""
@@ -281,7 +307,7 @@ preflight() {
     echo ""
     echo "  Current image:    $current_image"
     echo "  Target image:     $PG17_TARGET_IMAGE"
-    echo "  Upgrade image:    $PG17_UPGRADE_IMAGE"
+    echo "  Upgrade images:   $PG15_UPGRADE_IMAGE, $PG17_UPGRADE_IMAGE"
     echo "  Data directory:   $DATA_DIR"
     echo "  Backup location:  $BACKUP_DIR"
     echo ""
@@ -291,7 +317,8 @@ preflight() {
 # --- Step 1: Pull Postgres 17 image ----------------------------------------
 
 pull_image() {
-    info "Pulling Postgres 17 images"
+    info "Pulling upgrade and Postgres 17 images"
+    docker pull "$PG15_UPGRADE_IMAGE"
     docker pull "$PG17_UPGRADE_IMAGE"
     if [ "$PG17_TARGET_IMAGE" != "$PG17_UPGRADE_IMAGE" ]; then
         docker pull "$PG17_TARGET_IMAGE"
@@ -524,8 +551,16 @@ run_upgrade() {
         -v "${db_config_vol}:/etc/postgresql-custom" \
         -v "${staging_dir}:/tmp/staging:ro" \
         -e PGPASSWORD="$pg_password" \
-        "$current_image" \
+        "$PG15_UPGRADE_IMAGE" \
         infinity
+
+    # The files belong to the installed image's postgres user, which can have a
+    # different UID. Its config also requires conf.d, which older installs lack.
+    pg15_ownership_changed=true
+    docker exec "$UPGRADE_CONTAINER" bash -c '
+        mkdir -p /etc/postgresql-custom/conf.d
+        chown -R postgres:postgres /mnt/host-pgdata /etc/postgresql-custom
+    '
 
     info "Preparing upgrade environment"
     docker exec "$UPGRADE_CONTAINER" bash -c '
@@ -608,13 +643,8 @@ run_complete() {
         infinity
 
     info "Preparing complete.sh environment"
-    # Save original db-config ownership so we can restore it if complete.sh fails.
-    # complete.sh needs PG 17 ownership to start postgres, but if it fails the
-    # user needs to fall back to PG 15 which uses a different uid.
-    docker exec "$COMPLETE_CONTAINER" bash -c '
-        stat -c "%u:%g" /etc/postgresql-custom/pgsodium_root.key 2>/dev/null > /tmp/dbconfig_owner || true
-    '
-
+    # complete.sh needs PG 17 ownership to start postgres. If it fails, cleanup()
+    # restores ownership for the installed Postgres 15 image.
     docker exec "$COMPLETE_CONTAINER" bash -c '
         # Symlink bind mount so complete.sh CI wrapper can mv/rm/ln
         ln -s /mnt/host-migration /data_migration
@@ -654,13 +684,6 @@ run_complete() {
         warn "complete.sh failed. Postgres log:"
         docker exec "$COMPLETE_CONTAINER" cat /tmp/postgres.log 2>/dev/null || true
         echo ""
-        # Restore db-config ownership so PG 15 can start for rollback
-        warn "Restoring db-config ownership for PG15..."
-        local orig_owner
-        orig_owner=$(docker exec "$COMPLETE_CONTAINER" cat /tmp/dbconfig_owner 2>/dev/null || true)
-        if [ -n "$orig_owner" ]; then
-            docker exec "$COMPLETE_CONTAINER" chown -R "$orig_owner" /etc/postgresql-custom/ 2>/dev/null || true
-        fi
         docker rm -f "$COMPLETE_CONTAINER" >/dev/null 2>&1 || true
         echo ""
         echo "  Your Postgres 15 data is unchanged (data swap has not happened yet)."
@@ -686,6 +709,10 @@ swap_data() {
     echo "  $MIGRATION_DIR/pgdata -> $DATA_DIR"
     mv "$MIGRATION_DIR/pgdata" "$DATA_DIR"
     rm -rf "$MIGRATION_DIR"
+
+    # $DATA_DIR now holds Postgres 17 data. The rollback steps fix the backup's
+    # ownership if it's ever restored.
+    pg15_ownership_changed=false
 }
 
 # --- Step 8: Start Postgres 17 ---------------------------------------------
@@ -874,11 +901,13 @@ verify() {
     echo "    rm -rf $BACKUP_DIR ./volumes/db/pg17_upgrade_bin_*.tar.gz"
     echo ""
     echo "  Rollback (if needed):"
-    echo "    1. docker compose -f $PG_COMPOSE down"
-    echo "    2. rm -rf $DATA_DIR"
-    echo "    3. mv $BACKUP_DIR $DATA_DIR"
-    echo "    4. docker compose -f $PG_COMPOSE -f $PG15_COMPOSE run --rm --no-deps db chown -R postgres:postgres /etc/postgresql-custom/"
-    echo "    5. docker compose -f $PG_COMPOSE -f $PG15_COMPOSE up -d"
+    echo "    1. COMPOSE_IGNORE_ORPHANS=true docker compose -f docker-compose.yml -f docker-compose.client.yml down"
+    echo "    2. docker compose -f $PG_COMPOSE down"
+    echo "    3. rm -rf $DATA_DIR"
+    echo "    4. mv $BACKUP_DIR $DATA_DIR"
+    echo "    5. docker compose -f $PG_COMPOSE -f $PG15_COMPOSE run --rm --no-deps db chown -R postgres:postgres /etc/postgresql-custom/ /var/lib/postgresql/data"
+    echo "    6. docker compose -f $PG_COMPOSE -f $PG15_COMPOSE up -d --wait"
+    echo "    7. COMPOSE_IGNORE_ORPHANS=true docker compose -f docker-compose.yml -f docker-compose.client.yml up -d"
     echo ""
 }
 
