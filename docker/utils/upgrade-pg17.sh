@@ -25,6 +25,8 @@
 #   - pg_upgrade runs in a pinned Postgres 15 image rather than the installed
 #     one. Recogito's current Postgres 15 image is Alpine-based, but initiate.sh
 #     needs Ubuntu and the upgrade binaries need a matching glibc.
+#   - The tarball is built under ./volumes/db instead of /tmp, which can be too
+#     small and isn't covered by the pre-flight disk space check.
 #
 # Usage (must be run as root or with sudo):
 #   cd docker/
@@ -108,7 +110,8 @@ die() { printf 'Error: %s\n' "$*" >&2; exit 1; }
 info() { printf '\n==> %s\n' "$*"; }
 warn() { printf 'Warning: %s\n' "$*" >&2; }
 
-# Temp dir on host for tarball + scripts (mounted into containers)
+# Temp dir on host for tarball + scripts (mounted into containers).
+# Created in build_tarball, under ./volumes/db unless TMPDIR is set.
 staging_dir=""
 pg_password=""
 current_image=""
@@ -377,7 +380,10 @@ ensure_db_config_volume() {
 # the bundled libraries.
 
 build_tarball() {
-    local tmpbase="${TMPDIR:-/tmp}"
+    # Default to the filesystem preflight checked, not /tmp, which is often too
+    # small for the extracted binaries and tarball. Set TMPDIR to override. The
+    # path must be absolute: docker -v treats a relative one as a volume name.
+    local tmpbase="${TMPDIR:-$(cd "$(dirname "$DATA_DIR")" && pwd)}"
     staging_dir=$(mktemp -d "${tmpbase%/}/supabase-pg17-upgrade.XXXXXX")
     # World-writable so Docker containers can write to bind mounts on macOS,
     # where the VM's root user has no special access to host directories.
