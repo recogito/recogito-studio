@@ -1,0 +1,11 @@
+# Postgres 15 override, for rolling back a Postgres 17 upgrade.
+#
+# Usage:
+#   docker compose -f docker-compose.postgres.yml -f docker-compose.pg15.yml up -d
+#
+# See the rollback steps in utils/upgrade-pg17.sh. PG 15 and PG 17 use different
+# postgres UIDs, so the db-config volume must be chowned back before starting.
+
+services:
+  db:
+    image: supabase/postgres:15.19.0.007

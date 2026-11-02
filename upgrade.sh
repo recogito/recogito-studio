@@ -101,6 +101,43 @@ if grep -q '^KONG_HTTPS_PORT=' .env; then
     echo "         Point your reverse proxy at port ${API_GW_HTTP_PORT:-${KONG_HTTP_PORT:-8000}} (HTTP) instead of ${KONG_HTTPS_PORT}."
 fi
 
+pg_data_version() {
+    [ -d ./volumes/db/data ] || return 0
+    docker run --rm -v "$PWD/volumes/db/data:/pgdata:ro" alpine cat /pgdata/PG_VERSION 2>/dev/null || true
+}
+
+if [ "$(pg_data_version)" = "15" ]; then
+    echo "Found Postgres 15 data, upgrading to Postgres 17..."
+
+    DB_RUNNING=$(docker inspect -f '{{.State.Running}}' supabase-db 2>/dev/null || true)
+    if [ "$DB_RUNNING" = "false" ]; then
+        echo "Starting the existing Postgres 15 container..."
+        docker start supabase-db
+        for _ in $(seq 1 60); do
+            [ "$(docker inspect -f '{{.State.Health.Status}}' supabase-db)" = "healthy" ] && break
+            sleep 5
+        done
+        if [ "$(docker inspect -f '{{.State.Health.Status}}' supabase-db)" != "healthy" ]; then
+            echo "Error: supabase-db did not become healthy. Check \"docker logs supabase-db\"." >&2
+            exit 1
+        fi
+    elif [ -z "$DB_RUNNING" ]; then
+        docker compose -f ./docker-compose.postgres.yml -f ./docker-compose.pg15.yml up -d --wait --wait-timeout 300
+    fi
+
+    SUDO=""
+    if [ "$(id -u)" -ne 0 ]; then
+        SUDO=sudo
+    fi
+    $SUDO bash ./utils/upgrade-pg17.sh
+
+    if [ "$(pg_data_version)" = "15" ]; then
+        echo "Error: the database is still on Postgres 15, so the stack can't be upgraded." >&2
+        echo "       Re-run ./upgrade.sh when you're ready to upgrade Postgres." >&2
+        exit 1
+    fi
+fi
+
 docker compose -f ./docker-compose.postgres.yml up -d --wait --wait-timeout 300
 COMPOSE_IGNORE_ORPHANS=true docker compose -f ./docker-compose.yml up -d --wait --wait-timeout 300
 docker compose -f ./docker-compose.portainer.yml up -d --wait --wait-timeout 300

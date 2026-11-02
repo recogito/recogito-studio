@@ -9,3 +9,7 @@ package-lock.json
 recogito-client
 recogito-server
 config/config.local.json
+volumes/db/data.bak.pg*
+volumes/db/data_migration
+volumes/db/pg*_upgrade_bin_*.tar.gz
+volumes/db/pgsodium_root.key.bak.pg*
