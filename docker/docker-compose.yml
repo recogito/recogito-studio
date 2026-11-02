@@ -49,7 +49,7 @@ services:
 
   api-gw:
     container_name: supabase-envoy
-    image: envoyproxy/envoy:v1.39.1
+    image: envoyproxy/envoy:v1.39.6
     restart: unless-stopped
     healthcheck:
       # Using a TCP port check because this image does not include curl or wget.
@@ -193,7 +193,7 @@ services:
   realtime:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
     container_name: realtime-dev.supabase-realtime
-    image: supabase/realtime:v2.148.1
+    image: supabase/realtime:v2.148.6
     logging:
       driver: "json-file"
       options:
@@ -272,7 +272,7 @@ services:
 
   storage:
     container_name: supabase-storage
-    image: supabase/storage-api:v1.84.25
+    image: supabase/storage-api:v1.84.36
     depends_on:
       rest:
         condition: service_started
@@ -369,7 +369,7 @@ services:
 
   functions:
     container_name: supabase-edge-functions
-    image: supabase/edge-runtime:v1.77.8
+    image: supabase/edge-runtime:v1.77.9
     restart: unless-stopped
     logging:
       driver: "json-file"
