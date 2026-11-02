@@ -76,7 +76,7 @@ cd ./recogito-server
 
 npm install
 
-PGSSLMODE=disable npx supabase db push --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres --include-all
+PGSSLMODE=disable npx supabase db push --yes --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres --include-all
 
 sleep 5
 

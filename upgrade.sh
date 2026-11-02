@@ -165,7 +165,7 @@ cd ./recogito-server
 
 echo "Applying database migrations..."
 # Push any database schema changes to Postgres
-PGSSLMODE=disable npx supabase db push --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres --include-all
+PGSSLMODE=disable npx supabase db push --yes --db-url postgresql://postgres:$POSTGRES_PASSWORD@localhost:$POSTGRES_PORT/postgres --include-all
 
 echo "Syncing roles and policies..."
 sleep 5 # Give Postgres a moment to settle the new schema
