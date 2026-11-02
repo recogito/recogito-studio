@@ -13,3 +13,4 @@ volumes/db/data.bak.pg*
 volumes/db/data_migration
 volumes/db/pg*_upgrade_bin_*.tar.gz
 volumes/db/pgsodium_root.key.bak.pg*
+volumes/db/supabase-pg17-upgrade.*
