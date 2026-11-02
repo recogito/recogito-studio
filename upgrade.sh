@@ -19,6 +19,21 @@ if [ -f ./docker/config/config.local.json ]; then
 fi
 echo "Using config file $CONFIG_FILE"
 
+# Make sure temp files are gone before running
+for TEMP_REPO in recogito-client recogito-server; do
+    if [ -e "./$TEMP_REPO" ]; then
+        echo "Error: ./$TEMP_REPO already exists. Remove it and re-run ./upgrade.sh." >&2
+        exit 1
+    fi
+done
+
+REPO_ROOT="$PWD"
+cleanup() {
+    echo "Cleaning up temporary repositories..."
+    rm -rf "$REPO_ROOT/recogito-client" "$REPO_ROOT/recogito-server"
+}
+trap cleanup EXIT
+
 # --- Client upgrade
 
 echo "Cloning latest recogito-client..."
@@ -167,8 +182,7 @@ cd ./docker
 docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d --wait --wait-timeout 300 --force-recreate client
 cd ..
 
-echo "Cleaning up temporary repositories..."
-rm -rf ./recogito-client/
-rm -rf ./recogito-server/
+trap - EXIT
+cleanup
 
 echo "Recogito Studio Upgrade Complete!"
