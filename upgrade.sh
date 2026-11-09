@@ -47,7 +47,8 @@ cd ./recogito-client
 
 echo "Building new client docker image..."
 rm -f .env
-cp ../docker/.env .env
+# Filter out any values not read by the client
+grep -E '^[[:space:]]*(export[[:space:]]+)?(PUBLIC_[A-Z0-9_]*|SUPABASE_SERVERCLIENT_URL|SUPABASE_SERVICE_KEY|SITE_URL|ROOM_SECRET|IIIF_[A-Z0-9_]*|MAIL_[A-Z0-9_]*|INVITE_CRYPTO_KEY|TRIGGER_[A-Z0-9_]*|MULTI_TENANT|INSTALLED_PLUGINS)=' ../docker/.env > .env
 
 # Load env vars for the build process
 set -a && source .env && set +a
