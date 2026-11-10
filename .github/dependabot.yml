@@ -14,7 +14,6 @@ updates:
           - "postgrest/postgrest"
           - "envoyproxy/envoy"
           - "darthsim/imgproxy"
-          - "timberio/vector"
     ignore:
       - dependency-name: "recogito-studio-client"
       # Postgres major versions need to be upgraded by hand with pg_upgrade

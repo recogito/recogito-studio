@@ -110,6 +110,9 @@ cd ./docker
 # Remove Kong if it exists from an old version
 docker rm -f supabase-kong 2>/dev/null || true
 
+# Remove Vector if it exists from an old version
+docker rm -f supabase-vector 2>/dev/null || true
+
 # Envoy only listens on HTTP; TLS is expected to terminate at the reverse proxy (see nginx.server.example.com)
 if grep -q '^KONG_HTTPS_PORT=' .env; then
     echo "Warning: KONG_HTTPS_PORT is set in docker/.env, but the API gateway no longer serves HTTPS."
