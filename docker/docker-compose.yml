@@ -49,7 +49,7 @@ services:
 
   api-gw:
     container_name: supabase-envoy
-    image: envoyproxy/envoy:v1.39.6
+    image: envoyproxy/envoy:v1.40.2
     restart: unless-stopped
     healthcheck:
       # Using a TCP port check because this image does not include curl or wget.
@@ -333,7 +333,7 @@ services:
 
   imgproxy:
     container_name: supabase-imgproxy
-    image: darthsim/imgproxy:v3.31.4
+    image: darthsim/imgproxy:v4.0.23
     healthcheck:
       test: ["CMD", "imgproxy", "health"]
       timeout: 5s
@@ -350,7 +350,7 @@ services:
       IMGPROXY_BIND: ":5001"
       IMGPROXY_LOCAL_FILESYSTEM_ROOT: /
       IMGPROXY_USE_ETAG: "true"
-      IMGPROXY_ENABLE_WEBP_DETECTION: ${IMGPROXY_ENABLE_WEBP_DETECTION}
+      IMGPROXY_AUTO_WEBP: ${IMGPROXY_AUTO_WEBP:-${IMGPROXY_ENABLE_WEBP_DETECTION:-}}
 
   meta:
     container_name: supabase-meta
