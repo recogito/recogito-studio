@@ -249,8 +249,8 @@ services:
       - "9010:9000"
       - "9011:9001"
     environment:
-      RUSTFS_ACCESS_KEY: ${MINIO_ROOT_USER}
-      RUSTFS_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      RUSTFS_ACCESS_KEY: ${S3_ACCESS_KEY:-${MINIO_ROOT_USER}}
+      RUSTFS_SECRET_KEY: ${S3_SECRET_KEY:-${MINIO_ROOT_PASSWORD}}
       RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
     healthcheck:
       test: ["CMD", "curl", "-f", "http://rustfs:9000/health"]
@@ -271,7 +271,7 @@ services:
       - recogito
     entrypoint: >
       /bin/sh -ec "
-      rc alias set supa-rustfs http://rustfs:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD} &&
+      rc alias set supa-rustfs http://rustfs:9000 ${S3_ACCESS_KEY:-${MINIO_ROOT_USER}} ${S3_SECRET_KEY:-${MINIO_ROOT_PASSWORD}} &&
       rc mb --ignore-existing supa-rustfs/stub
       "
 
@@ -319,8 +319,8 @@ services:
       STORAGE_S3_BUCKET: stub
       STORAGE_S3_ENDPOINT: http://rustfs:9000
       STORAGE_S3_FORCE_PATH_STYLE: true
-      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
-      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+      AWS_ACCESS_KEY_ID: ${S3_ACCESS_KEY:-${MINIO_ROOT_USER}}
+      AWS_SECRET_ACCESS_KEY: ${S3_SECRET_KEY:-${MINIO_ROOT_PASSWORD}}
       AWS_DEFAULT_REGION: stub
       FILE_STORAGE_BACKEND_PATH: /var/lib/storage
       TENANT_ID: stub
