@@ -354,7 +354,12 @@ services:
 
   meta:
     container_name: supabase-meta
-    image: supabase/postgres-meta:v0.100.0
+    # Temporarily built locally for Node 22.23.4 security fix
+    # Versions live in ./images/postgres-meta/Dockerfile.
+    image: recogito-postgres-meta:latest
+    build: ./images/postgres-meta
+    # Rebuild on every `up` (cached unless the Dockerfile changed)
+    pull_policy: build
     restart: unless-stopped
     logging:
       driver: "json-file"
