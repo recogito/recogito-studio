@@ -176,7 +176,7 @@ services:
 
   rest:
     container_name: supabase-rest
-    image: postgrest/postgrest:v14.18
+    image: postgrest/postgrest:v16.5
     restart: unless-stopped
     logging:
       driver: "json-file"
