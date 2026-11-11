@@ -1,5 +1,15 @@
 version: 2
 updates:
+  # Node.js base + upstream version for our rebuilt postgres-meta image.
+  # Checked daily so Node security releases land quickly.
+  - package-ecosystem: "docker"
+    directory: "/docker/images/postgres-meta"
+    schedule:
+      interval: "daily"
+    ignore:
+      # Must match the Node major that upstream postgres-meta is built with
+      - dependency-name: "node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "docker-compose"
     directories:
       - "/docker"
@@ -16,6 +26,8 @@ updates:
           - "darthsim/imgproxy"
     ignore:
       - dependency-name: "recogito-studio-client"
+      # Built locally from docker/images/postgres-meta (tracked above)
+      - dependency-name: "recogito-postgres-meta"
       # Postgres major versions need to be upgraded by hand with pg_upgrade
       - dependency-name: "supabase/postgres"
         update-types: ["version-update:semver-major"]
