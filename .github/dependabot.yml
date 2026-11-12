@@ -21,13 +21,14 @@ updates:
       supabase:
         patterns:
           - "supabase/*"
-          - "postgrest/postgrest"
           - "envoyproxy/envoy"
           - "darthsim/imgproxy"
     ignore:
       - dependency-name: "recogito-studio-client"
       # Built locally from docker/images/postgres-meta (tracked above)
       - dependency-name: "recogito-postgres-meta"
+      # Upstream Supabase is still on an older version of postgrest
+      - dependency-name: "postgrest/postgrest"
       # Postgres major versions need to be upgraded by hand with pg_upgrade
       - dependency-name: "supabase/postgres"
         update-types: ["version-update:semver-major"]
