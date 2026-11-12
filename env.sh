@@ -17,7 +17,7 @@ set -eo pipefail
 
 usage() {
     cat <<'EOF'
-Usage: ./setup-env.sh [options]
+Usage: ./env.sh [options]
 
 Populates your `.env` file from `.env.example`.
 
@@ -218,7 +218,7 @@ if [ -n "$MISSING" ]; then
         # Start on a new line even if the file doesn't end with one
         [ -z "$(tail -c 1 "$ENV_FILE")" ] || echo
         echo
-        echo "# Added by setup-env.sh from .env.example on $(date +%Y-%m-%d)"
+        echo "# Added by env.sh from .env.example on $(date +%Y-%m-%d)"
         for KEY in $MISSING; do
             grep -m1 "^$KEY=" "$EXAMPLE_FILE"
         done
