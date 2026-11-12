@@ -10,13 +10,7 @@ Project import/export runs as background jobs on [Trigger.dev](https://trigger.d
 
 ## Upgrade Recogito Studio
 
-### Manual upgrade
-
-To upgrade your self-hosted instance, you can follow the [manual upgrade guide](https://recogitostudio.org/guides/self-hosting/#upgrading).
-
-### Automatic upgrade via shell script
-
-For a faster, hands-off upgrade process, you can use the provided `upgrade.sh` script. This script automatically pulls the latest code, applies your custom configurations, builds the new Docker image, updates the database schema, and restarts your containers.
+To upgrade your self-hosted instance, use the provided `upgrade.sh` script (see also the [upgrade guide](https://recogitostudio.org/guides/self-hosting/#upgrading)). This script automatically pulls the latest code, applies your custom configurations, builds the new Docker image, updates the database schema, and restarts your containers.
 
 Make sure you are in the root of this repo, `recogito-studio`, and pull the latest version.
 ```sh
