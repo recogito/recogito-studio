@@ -31,8 +31,8 @@ cd ./recogito-client
 echo "Building Client docker container"
 
 rm -f .env
-# Filter out any values not read by the client
-grep -E '^[[:space:]]*(export[[:space:]]+)?(PUBLIC_[A-Z0-9_]*|SUPABASE_SERVERCLIENT_URL|SUPABASE_SERVICE_KEY|SITE_URL|ROOM_SECRET|IIIF_[A-Z0-9_]*|MAIL_[A-Z0-9_]*|INVITE_CRYPTO_KEY|TRIGGER_[A-Z0-9_]*|MULTI_TENANT|INSTALLED_PLUGINS)=' ../docker/.env > .env
+# Filter out any values not read by the client. The access token is only for deploying tasks, so keep it out of the image.
+grep -E '^[[:space:]]*(export[[:space:]]+)?(PUBLIC_[A-Z0-9_]*|SUPABASE_SERVERCLIENT_URL|SUPABASE_SERVICE_KEY|SITE_URL|ROOM_SECRET|IIIF_[A-Z0-9_]*|MAIL_[A-Z0-9_]*|INVITE_CRYPTO_KEY|TRIGGER_[A-Z0-9_]*|MULTI_TENANT|INSTALLED_PLUGINS)=' ../docker/.env | grep -v 'TRIGGER_ACCESS_TOKEN=' > .env
 
 # Load the full env into the shell
 set -a && source ../docker/.env && set +a
@@ -83,13 +83,24 @@ sleep 5
 
 node ./create-default-groups.js -f ./config.json
 
+cd ..
+
+# Deploy the import/export tasks to Trigger.dev. A failure doesn't stop the install.
+TRIGGER_DEPLOY_FAILED=""
+if ! bash ./deploy-trigger-tasks.sh ./recogito-client; then
+    TRIGGER_DEPLOY_FAILED=true
+fi
+
 # Remove the client and server repos
 
 echo "Removing repositories"
 
-cd ..
-
 rm -rf ./recogito-client/
 rm -rf ./recogito-server/
+
+if [ -n "$TRIGGER_DEPLOY_FAILED" ]; then
+    echo "Warning: the Trigger.dev task deploy failed, so project import/export won't work yet." >&2
+    echo "         Fix the error above and run ./deploy-trigger-tasks.sh." >&2
+fi
 
 echo "Recogito Studio Installed!"

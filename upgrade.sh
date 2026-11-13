@@ -47,8 +47,8 @@ cd ./recogito-client
 
 echo "Building new client docker image..."
 rm -f .env
-# Filter out any values not read by the client
-grep -E '^[[:space:]]*(export[[:space:]]+)?(PUBLIC_[A-Z0-9_]*|SUPABASE_SERVERCLIENT_URL|SUPABASE_SERVICE_KEY|SITE_URL|ROOM_SECRET|IIIF_[A-Z0-9_]*|MAIL_[A-Z0-9_]*|INVITE_CRYPTO_KEY|TRIGGER_[A-Z0-9_]*|MULTI_TENANT|INSTALLED_PLUGINS)=' ../docker/.env > .env
+# Filter out any values not read by the client. The access token is only for deploying tasks, so keep it out of the image.
+grep -E '^[[:space:]]*(export[[:space:]]+)?(PUBLIC_[A-Z0-9_]*|SUPABASE_SERVERCLIENT_URL|SUPABASE_SERVICE_KEY|SITE_URL|ROOM_SECRET|IIIF_[A-Z0-9_]*|MAIL_[A-Z0-9_]*|INVITE_CRYPTO_KEY|TRIGGER_[A-Z0-9_]*|MULTI_TENANT|INSTALLED_PLUGINS)=' ../docker/.env | grep -v 'TRIGGER_ACCESS_TOKEN=' > .env
 
 # Load the full env into the shell
 set -a && source ../docker/.env && set +a
@@ -186,7 +186,18 @@ cd ./docker
 docker compose -f ./docker-compose.yml -f ./docker-compose.client.yml up -d --wait --wait-timeout 300 --force-recreate client
 cd ..
 
+# Redeploy the import/export tasks so they match the new client. A failure doesn't undo the upgrade.
+TRIGGER_DEPLOY_FAILED=""
+if ! bash ./deploy-trigger-tasks.sh ./recogito-client; then
+    TRIGGER_DEPLOY_FAILED=true
+fi
+
 trap - EXIT
 cleanup
+
+if [ -n "$TRIGGER_DEPLOY_FAILED" ]; then
+    echo "Warning: the Trigger.dev task deploy failed, so project import/export may not work until the tasks are redeployed." >&2
+    echo "         Fix the error above and run ./deploy-trigger-tasks.sh." >&2
+fi
 
 echo "Recogito Studio Upgrade Complete!"

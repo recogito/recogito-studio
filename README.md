@@ -6,7 +6,16 @@
 
 ## Trigger.dev (project import/export)
 
-Project import/export runs as background jobs on [Trigger.dev](https://trigger.dev/), so a Trigger.dev project is required for those features (the rest of the app works without it). You can use managed Trigger.dev Cloud or [self-host your own instance](https://trigger.dev/docs/self-hosting/overview). See [Set Up Trigger.dev](https://recogitostudio.org/guides/self-hosting/#set-up-triggerdev) for the setup and task-deploy steps. If you self-host, pin your instance to a version compatible with the client's `@trigger.dev/sdk` (see [`package.json`](https://github.com/recogito/recogito-client/blob/main/package.json)).
+Project import/export runs as background jobs on [Trigger.dev](https://trigger.dev/), so a Trigger.dev project is required for those features (the rest of the app works without it). You can use managed Trigger.dev Cloud or [self-host your own instance](https://trigger.dev/docs/self-hosting/overview). See [Set Up Trigger.dev](https://recogitostudio.org/guides/self-hosting/#set-up-triggerdev) for the setup steps. If you self-host, pin your instance to a version compatible with the client's `@trigger.dev/sdk` (see [`package.json`](https://github.com/recogito/recogito-client/blob/main/package.json)).
+
+The import/export tasks have to be deployed to your Trigger.dev project, and redeployed after each upgrade. To have `install-self-hosted-docker.sh` and `upgrade.sh` do this for you, create a personal access token in the Trigger.dev dashboard and set it as `TRIGGER_ACCESS_TOKEN` in `docker/.env`. Without the token, the scripts skip the deploy and you deploy the tasks manually.
+
+To deploy the tasks on their own, for example to retry a failed deploy, run:
+```sh
+./deploy-trigger-tasks.sh
+```
+
+If you self-host Trigger.dev, the deploy builds the task image locally and pushes it to your instance's registry, so run `docker login` for that registry first, as the same user that runs the scripts.
 
 ## Upgrade Recogito Studio
 
