@@ -169,8 +169,10 @@ saml_key() {
 
 CHANGED=""
 
+ENV_EXISTED=false
 if [ -f "$ENV_FILE" ]; then
-    echo "docker/.env already exists"
+    ENV_EXISTED=true
+    echo "docker/.env found, checking for updates"
 else
     cp "$EXAMPLE_FILE" "$ENV_FILE"
     chmod 600 "$ENV_FILE"
@@ -306,9 +308,11 @@ elif [ -z "$MISSING" ] && [ -z "$RENAMED" ]; then
     echo "No automatic variable updates needed. docker/.env is unchanged."
 fi
 
-# Values only the operator can choose, still empty or at their .env.example default
+# Values only the operator can choose, still empty or at their .env.example default.
+# This list is only printed for fresh installs because some of these values can't
+# be changed via env changes afterward.
 REMAINING=""
-for KEY in \
+[ "$ENV_EXISTED" = true ] || for KEY in \
     DASHBOARD_PASSWORD ORG_ADMIN_PW S3_ACCESS_KEY S3_SECRET_KEY \
     PGADMIN_ADMIN_EMAIL PGADMIN_ADMIN_PASSWORD \
     SITE_URL API_EXTERNAL_URL PUBLIC_SUPABASE PUBLIC_IIIF_CANTALOUPE_PATH \
@@ -326,5 +330,5 @@ if [ -n "$REMAINING" ]; then
     for KEY in $REMAINING; do
         echo "  $KEY"
     done
-    echo "Updating these values in ./docker/.env is highly recommended."
+    echo "Please update these values in docker/.env before proceeding."
 fi
