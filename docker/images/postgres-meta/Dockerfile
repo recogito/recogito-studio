@@ -1,5 +1,5 @@
 # Temporary fix to get up-to-date Node 22 onto supabase-meta
-FROM supabase/postgres-meta:v0.100.0 AS upstream
+FROM supabase/postgres-meta:v0.100.1 AS upstream
 
 FROM node:22.23.4-slim
 RUN apt-get update && apt-get install -y \
