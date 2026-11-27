@@ -9,7 +9,7 @@ name: supabase
 services:
   studio:
     container_name: supabase-studio
-    image: supabase/studio:2026.11.09-sha-1567384
+    image: supabase/studio:2026.11.23-sha-4a73166
     restart: unless-stopped
     healthcheck:
       test:
@@ -88,7 +88,7 @@ services:
 
   auth:
     container_name: supabase-auth
-    image: supabase/gotrue:v2.197.0
+    image: supabase/gotrue:v2.198.0
     logging:
       driver: "json-file"
       options:
@@ -198,7 +198,7 @@ services:
   realtime:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
     container_name: realtime-dev.supabase-realtime
-    image: supabase/realtime:v2.156.0
+    image: supabase/realtime:v2.177.3
     logging:
       driver: "json-file"
       options:
@@ -277,7 +277,7 @@ services:
 
   storage:
     container_name: supabase-storage
-    image: supabase/storage-api:v1.92.0
+    image: supabase/storage-api:v1.98.9
     depends_on:
       rest:
         condition: service_started
@@ -333,7 +333,7 @@ services:
 
   imgproxy:
     container_name: supabase-imgproxy
-    image: darthsim/imgproxy:v4.0.23
+    image: darthsim/imgproxy:v4.0.25
     healthcheck:
       test: ["CMD", "imgproxy", "health"]
       timeout: 5s
@@ -374,7 +374,7 @@ services:
 
   functions:
     container_name: supabase-edge-functions
-    image: supabase/edge-runtime:v1.78.1
+    image: supabase/edge-runtime:v1.79.5
     restart: unless-stopped
     logging:
       driver: "json-file"
